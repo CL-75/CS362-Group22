@@ -23,6 +23,14 @@ class TestValidInteger(unittest.TestCase):
         num = '-15'
         self.assertEqual(task.valid_integer(num), True)
 
+    def test6(self):
+        num = '1643'
+        self.assertEqual(task.valid_integer(num), True)
+
+    def test7(self):
+        num = '436-15'
+        self.assertEqual(task.valid_integer(num), False)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,4 @@
-import string
+import re
 
 
 def conv_num(num_str):
@@ -24,12 +24,9 @@ def valid_integer(num_str):
     Takes a string as input and returns True if the string represents a valid
     integer. Returns False otherwise.
     """
-    if len(num_str) == 0:
-        return False
-
-    if all(digit in string.digits for digit in num_str):
+    match = re.match(r'^-?[0-9]+$', num_str)
+    if match:
         return True
-
     return False
 
 
