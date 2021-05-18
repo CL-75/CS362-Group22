@@ -21,7 +21,7 @@ def valid_integer(num_str):
     Takes a string as input and returns True if the string represents a valid
     integer. Returns False otherwise.
     """
-    pass
+    return False
 
 
 def valid_decimal(num_str):
