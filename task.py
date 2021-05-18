@@ -35,7 +35,10 @@ def valid_decimal(num_str):
     Takes a string as input and returns True if the string represents a valid
     decimal number. Returns False otherwise.
     """
-    pass
+    match = re.match(r'^(?=.*?[0-9])-?[0-9]*\.[0-9]*$', num_str)
+    if match:
+        return True
+    return False
 
 
 def valid_hexadecimal(num_str):
