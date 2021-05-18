@@ -21,9 +21,9 @@ def valid_integer(num_str):
     Takes a string as input and returns True if the string represents a valid
     integer. Returns False otherwise.
     """
-    if num_str == '1':
-        return True
-    return False
+    if num_str == '':
+        return False
+    return True
 
 
 def valid_decimal(num_str):
