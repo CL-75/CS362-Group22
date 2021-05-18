@@ -11,6 +11,10 @@ class TestValidInteger(unittest.TestCase):
         num = '1'
         self.assertEqual(task.valid_integer(num), True)
 
+    def test3(self):
+        num = '2'
+        self.assertEqual(task.valid_integer(num), True)
+
 
 if __name__ == '__main__':
     unittest.main()
