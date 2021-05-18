@@ -1,3 +1,6 @@
+import string
+
+
 def conv_num(num_str):
     """
     Takes a string as input and converts the string into a number and
@@ -21,9 +24,13 @@ def valid_integer(num_str):
     Takes a string as input and returns True if the string represents a valid
     integer. Returns False otherwise.
     """
-    if num_str == '':
+    if len(num_str) == 0:
         return False
-    return True
+
+    if all(digit in string.digits for digit in num_str):
+        return True
+
+    return False
 
 
 def valid_decimal(num_str):
