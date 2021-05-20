@@ -61,6 +61,40 @@ class TestValidDecimal(unittest.TestCase):
         num = '14.87.'
         self.assertEqual(task.valid_decimal(num), False)
 
+    def test8(self):
+        num = ''
+        self.assertEqual(task.valid_decimal(num), False)
+
+
+class TestValidHexadecimal(unittest.TestCase):
+    def test1(self):
+        num = ''
+        self.assertEqual(task.valid_hexadecimal(num), False)
+
+    def test2(self):
+        num = '165'
+        self.assertEqual(task.valid_hexadecimal(num), False)
+
+    def test3(self):
+        num = '0x61F'
+        self.assertEqual(task.valid_hexadecimal(num), True)
+
+    def test4(self):
+        num = '0x61Y'
+        self.assertEqual(task.valid_hexadecimal(num), False)
+
+    def test5(self):
+        num = '-0x2b'
+        self.assertEqual(task.valid_hexadecimal(num), True)
+
+    def test6(self):
+        num = 'x62'
+        self.assertEqual(task.valid_hexadecimal(num), False)
+
+    def test7(self):
+        num = '-0xFDE5'
+        self.assertEqual(task.valid_hexadecimal(num), True)
+
 
 if __name__ == '__main__':
     unittest.main()
