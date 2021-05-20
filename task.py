@@ -34,9 +34,7 @@ def valid_integer(num_str):
     integer. Returns False otherwise.
     """
     match = re.match(r'^-?[0-9]+$', num_str)
-    if match:
-        return True
-    return False
+    return match is not None
 
 
 def valid_decimal(num_str):
@@ -45,9 +43,7 @@ def valid_decimal(num_str):
     decimal number. Returns False otherwise.
     """
     match = re.match(r'^(?=.*?[0-9])-?[0-9]*\.[0-9]*$', num_str)
-    if match:
-        return True
-    return False
+    return match is not None
 
 
 def valid_hexadecimal(num_str):
@@ -56,9 +52,7 @@ def valid_hexadecimal(num_str):
     hexadecimal number. Returns False otherwise.
     """
     match = re.match(r'^-?0x[0-9a-fA-F]*$', num_str)
-    if match:
-        return True
-    return False
+    return match is not None
 
 
 ##########
