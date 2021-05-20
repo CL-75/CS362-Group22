@@ -60,7 +60,7 @@ def valid_hexadecimal(num_str):
         return True
     return False
 
-  
+
 ##########
 # Helper functions for my_datetime() function
 ##########
