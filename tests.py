@@ -2,6 +2,28 @@ import unittest
 import task
 
 
+class TestValidNumber(unittest.TestCase):
+    def test1(self):
+        num = ''
+        self.assertEqual(task.valid_number(num), False)
+
+    def test2(self):
+        num = '61'
+        self.assertEqual(task.valid_number(num), 'integer')
+
+    def test3(self):
+        num = '73.72'
+        self.assertEqual(task.valid_number(num), 'decimal')
+
+    def test4(self):
+        num = '-0x5D8'
+        self.assertEqual(task.valid_number(num), 'hexadecimal')
+
+    def test5(self):
+        num = '0x67.fa'
+        self.assertEqual(task.valid_number(num), False)
+
+
 class TestValidInteger(unittest.TestCase):
     def test1(self):
         num = ''

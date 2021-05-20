@@ -16,7 +16,16 @@ def valid_number(num_str):
     'hexadecimal' if the string is a valid hexadecimal number.
     Returns False otherwise.
     """
-    pass
+    if valid_integer(num_str):
+        return 'integer'
+
+    if valid_decimal(num_str):
+        return 'decimal'
+
+    if valid_hexadecimal(num_str):
+        return 'hexadecimal'
+
+    return False
 
 
 def valid_integer(num_str):
