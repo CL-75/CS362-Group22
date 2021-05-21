@@ -81,7 +81,7 @@ def valid_hexadecimal(num_str):
     Takes a string as input and returns True if the string represents a valid
     hexadecimal number. Returns False otherwise.
     """
-    match = re.match(r'^-?0x[0-9a-fA-F]*$', num_str)
+    match = re.match(r'^-?0[xX][0-9a-fA-F]*$', num_str)
     return match is not None
 
 

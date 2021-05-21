@@ -147,6 +147,10 @@ class TestValidHexadecimal(unittest.TestCase):
         num = '-0xFDE5'
         self.assertEqual(task.valid_hexadecimal(num), True)
 
+    def test8(self):
+        num = '-0X2b'
+        self.assertEqual(task.valid_hexadecimal(num), True)
+
 
 if __name__ == '__main__':
     unittest.main()
