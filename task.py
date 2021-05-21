@@ -4,9 +4,39 @@ import re
 def conv_num(num_str):
     """
     Takes a string as input and converts the string into a number and
-    returns the number. Returns False if the string is not a valid number.
+    returns the number. Returns None if the string is not a valid number
+    or if the input is not a string.
     """
     pass
+
+
+def value_of_char(char):
+    """
+    Takes a single character of 0-9, A-F, or a-f and returns the
+    intger value of that character.
+    """
+    ascii_value = ord(char.lower())
+
+    # Char is a number
+    if ascii_value >= 48 and ascii_value <= 57:
+        return ascii_value - 48
+
+    # Char is a letter
+    return ascii_value - 87
+
+
+def convert_integral_part(num_str, base=10):
+    """
+    Takes a string representing a positive non-fractional number as input
+    and converts and returns the string as an integer.
+    """
+    converted_num = 0
+    power = 0
+    for num in reversed(num_str):
+        converted_num += value_of_char(num) * base**power
+        power += 1
+
+    return converted_num
 
 
 def valid_number(num_str):

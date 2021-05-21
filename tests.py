@@ -2,6 +2,36 @@ import unittest
 import task
 
 
+class TestConvertInteger(unittest.TestCase):
+    def test1(self):
+        num = '6'
+        self.assertEqual(task.convert_integral_part(num), 6)
+
+    def test2(self):
+        num = '72456'
+        self.assertEqual(task.convert_integral_part(num), 72456)
+
+    def test3(self):
+        num = '0'
+        self.assertEqual(task.convert_integral_part(num), 0)
+
+    def test4(self):
+        num = '10'
+        self.assertEqual(task.convert_integral_part(num), 10)
+
+    def test5(self):
+        num = '10'
+        self.assertEqual(task.convert_integral_part(num, base=16), 16)
+
+    def test6(self):
+        num = 'A'
+        self.assertEqual(task.convert_integral_part(num, base=16), 10)
+
+    def test7(self):
+        num = '63b5e'
+        self.assertEqual(task.convert_integral_part(num, base=16), 408414)
+
+
 class TestValidNumber(unittest.TestCase):
     def test1(self):
         num = ''
