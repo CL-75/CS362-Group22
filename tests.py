@@ -102,6 +102,66 @@ class TestDecToBase16(unittest.TestCase):
                                                          (input1)))
 
 
+# Function #3 Testing for conv_to_hex_values() Function
+class TestConvDecToHexValues(unittest.TestCase):
+    # Test Function #3 conv_to_hex_values 1: Pass a list of zeros to
+    # make sure that each value is formatted correctly
+    def test1(self):
+        input1 = [0, 0, 0, 0, 0]
+        expected = ['0', '0', '0', '0', '0']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+    # Test Function #3 conv_to_hex_values 2: Pass a list of values 1-9
+    # to make sure that each value is converted correctly
+    def test2(self):
+        input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        expected = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+    # Test Function #3 conv_to_hex_values 2: Pass a list of the highest
+    # base 16 digit values, in reverse order, to make sure that  each
+    # value is converted correctly
+    def test3(self):
+        input1 = [15, 14, 13, 12, 11, 10]
+        expected = ['F', 'E', 'D', 'C', 'B', 'A']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+    # Test Function #3 conv_to_hex_values 3: Pass a list of
+    # equivalent hex values, that represent the largest possible
+    # 32-bit integer, to make sure that each value is converted correctly
+    def test4(self):
+        input1 = [7, 15, 15, 15, 15, 15, 15, 15]
+        expected = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+    # Test Function #3 conv_to_hex_values: Pass a list of hex values,
+    # corresponding to the lecture example, to make sure that each value
+    # is converted correctly
+    def test5(self):
+        input1 = [14, 9, 1, 10, 2]
+        expected = ['E', '9', '1', 'A', '2']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+
 class TestValidNumber(unittest.TestCase):
     def test1(self):
         num = ''
