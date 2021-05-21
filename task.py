@@ -28,10 +28,9 @@ def dec_to_base16(num1):
         num1 = num1 * -1
     while num1 >= 16:
         new_mod = int(num1 % 16)
-        hex_list.append(new_mod)
+        hex_list.insert(0, new_mod)
         num1 = int(num1 / 16)
-    hex_list.append(num1)
-    hex_list = hex_list[::-1]
+    hex_list.insert(0, num1)
 
     return hex_list
 
