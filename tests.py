@@ -2,6 +2,106 @@ import unittest
 import task
 
 
+# Function #3 Testing for is_num_negative() Function
+class TestIsNumNegative(unittest.TestCase):
+    # Test Function #3 is_num_negative 1: Test 0
+    def test1(self):
+        input1 = 0
+        self.assertFalse(task.is_num_negative(input1))
+
+    # Test Function #3 is_num_negative 2: Test -1
+    def test2(self):
+        input1 = -1
+        self.assertTrue(task.is_num_negative(input1))
+
+    # Test Function #3 is_num_negative 3: Test 1
+    def test3(self):
+        input1 = 1
+        self.assertFalse(task.is_num_negative(input1))
+
+    # Test Function #3 is_num_negative 4: Test smallest 32-bit negative int
+    def test4(self):
+        input1 = -2147483648
+        self.assertTrue(task.is_num_negative(input1))
+
+    # Test Function #3 is_num_negative 5: Test largest 32-bit positive int
+    def test5(self):
+        input1 = 2147483647
+        self.assertFalse(task.is_num_negative(input1))
+
+
+# Function #3 Testing for dec_to_base16() Function
+class TestDecToBase16(unittest.TestCase):
+    # Test Function #3 dec_to_binary 1: Pass zero to make sure it is
+    # handled correctly
+    def test1(self):
+        input1 = 0
+        expected = [0]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 2: Pass the largest hex digit value
+    # to see that it is stored correctly
+    def test2(self):
+        input1 = 15
+        expected = [15]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 3: Pass an int value one larger than
+    # the largest hex digit to see that it is stored correctly
+    def test3(self):
+        input1 = 16
+        expected = [1, 0]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 4: Pass a value one greater than the
+    # 16s column to make sure that it is handled correctly
+    def test4(self):
+        input1 = 256
+        expected = [1, 0, 0]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function # dec_to_base16 5: Pass lecture example integer
+    def test5(self):
+        input1 = 954786
+        expected = [14, 9, 1, 10, 2]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 6: Pass largest 32-bit int to make
+    # sure it is handled correctly
+    def test6(self):
+        input1 = 2147483647
+        expected = [7, 15, 15, 15, 15, 15, 15, 15]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 7: Pass the smallest 32-bit int to
+    # make sure it is treated correctly
+    def test7(self):
+        input1 = -2147483647
+        expected = [7, 15, 15, 15, 15, 15, 15, 15]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+
 class TestConvertIntegeralPart(unittest.TestCase):
     def test1(self):
         num = '6'
@@ -181,5 +281,27 @@ class TestValidHexadecimal(unittest.TestCase):
         self.assertEqual(task.valid_hexadecimal(num), True)
 
 
+# Tests for get_full_date() function. Tests output.
+class TestGetFullDate(unittest.TestCase):
+
+    def test_1(self):
+        self.assertTrue(task.get_full_date(0, 0, 0), True)
+
+    def test_2(self):
+        self.assertTrue(task.get_full_date(10, 27, 2020), True)
+
+    def test_3(self):
+        self.assertTrue(task.get_full_date(6, 30, 1995), True)
+
+    def test_4(self):
+        self.assertTrue(task.get_full_date(11, 18, 1980), True)
+
+    def test_5(self):
+        self.assertTrue(task.get_full_date(1, 1, 1695), True)
+
+    def test_6(self):
+        self.assertTrue(task.get_full_date(7, 5, 1991), True)
+
+
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
