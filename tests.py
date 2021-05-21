@@ -91,8 +91,8 @@ class TestDecToBase16(unittest.TestCase):
                                                          task.dec_to_base16
                                                          (input1)))
 
-    # Test Function #3 dec_to_base16 7: Pass the smallest 32-bit int to
-    # make sure it is treated correctly
+    # Test Function #3 dec_to_base16 7: Pass the smallest 32-bit int,
+    # plus one, to make sure it is treated correctly
     def test7(self):
         input1 = -2147483647
         expected = [7, 15, 15, 15, 15, 15, 15, 15]
