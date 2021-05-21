@@ -59,12 +59,19 @@ def valid_hexadecimal(num_str):
 # Helper functions for my_datetime() function
 ##########
 
-def get_str(month, day, yr):
+def get_full_date(month, day, yr):
+    """
+    For output use.
+    Converts the given month, day, and year into
+    the proper string for output.
+    """
     temp_date = str(month) + "-"
 
+    # Adding a 0 if the month number is less than 10, i.e. May would be 05
     if month < 10:
         temp_date = "0" + temp_date
 
+    # Adding a 0 if the day number is less than 10, i.e. the 5th would be 05
     if day < 10:
         temp_date += "0"
 
