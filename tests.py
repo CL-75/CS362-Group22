@@ -218,5 +218,27 @@ class TestValidHexadecimal(unittest.TestCase):
         self.assertEqual(task.valid_hexadecimal(num), True)
 
 
+# Tests for get_full_date() function. Tests output.
+class TestGetFullDate(unittest.TestCase):
+
+    def test_1(self):
+        self.assertTrue(task.get_full_date(0, 0, 0), True)
+
+    def test_2(self):
+        self.assertTrue(task.get_full_date(10, 27, 2020), True)
+
+    def test_3(self):
+        self.assertTrue(task.get_full_date(6, 30, 1995), True)
+
+    def test_4(self):
+        self.assertTrue(task.get_full_date(11, 18, 1980), True)
+
+    def test_5(self):
+        self.assertTrue(task.get_full_date(1, 1, 1695), True)
+
+    def test_6(self):
+        self.assertTrue(task.get_full_date(7, 5, 1991), True)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
