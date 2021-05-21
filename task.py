@@ -39,6 +39,14 @@ def convert_integral_part(num_str, base=10):
     return converted_num
 
 
+def convert_fractional_part(num_str):
+    """
+    Takes a string representing the fractional part of a number as input and
+    converts and returns the string as a float. (e.g. '945' returns 0.945)
+    """
+    return convert_integral_part(num_str) / 10**len(num_str)
+
+
 def valid_number(num_str):
     """
     Takes a string as input and returns 'integer' if the string is a valid
