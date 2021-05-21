@@ -30,13 +30,10 @@ def convert_integral_part(num_str, base=10):
     Takes a string representing a positive non-fractional number as input
     and converts and returns the string as an integer.
     """
-    converted_num = 0
-    power = 0
-    for num in reversed(num_str):
-        converted_num += value_of_char(num) * base**power
-        power += 1
-
-    return converted_num
+    return sum(
+        value_of_char(char) * base**power
+        for power, char in enumerate(reversed(num_str))
+    )
 
 
 def convert_fractional_part(num_str):
