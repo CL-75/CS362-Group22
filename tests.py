@@ -162,6 +162,65 @@ class TestConvDecToHexValues(unittest.TestCase):
                                                          (input1)))
 
 
+class TestConvertIntegeralPart(unittest.TestCase):
+    def test1(self):
+        num = '6'
+        self.assertEqual(task.convert_integral_part(num), 6)
+        self.assertIsInstance(task.convert_integral_part(num), int)
+
+    def test2(self):
+        num = '72456'
+        self.assertEqual(task.convert_integral_part(num), 72456)
+        self.assertIsInstance(task.convert_integral_part(num), int)
+
+    def test3(self):
+        num = '0'
+        self.assertEqual(task.convert_integral_part(num), 0)
+        self.assertIsInstance(task.convert_integral_part(num), int)
+
+    def test4(self):
+        num = '10'
+        self.assertEqual(task.convert_integral_part(num), 10)
+        self.assertIsInstance(task.convert_integral_part(num), int)
+
+    def test5(self):
+        num = '10'
+        self.assertEqual(task.convert_integral_part(num, base=16), 16)
+        self.assertIsInstance(task.convert_integral_part(num), int)
+
+    def test6(self):
+        num = 'A'
+        self.assertEqual(task.convert_integral_part(num, base=16), 10)
+        self.assertIsInstance(task.convert_integral_part(num), int)
+
+    def test7(self):
+        num = '63b5e'
+        self.assertEqual(task.convert_integral_part(num, base=16), 408414)
+        self.assertIsInstance(task.convert_integral_part(num), int)
+
+
+class TestConvertFractionalPart(unittest.TestCase):
+    def test1(self):
+        num = '945'
+        self.assertEqual(task.convert_fractional_part(num), 0.945)
+        self.assertIsInstance(task.convert_fractional_part(num), float)
+
+    def test2(self):
+        num = '078'
+        self.assertEqual(task.convert_fractional_part(num), 0.078)
+        self.assertIsInstance(task.convert_fractional_part(num), float)
+
+    def test3(self):
+        num = '400'
+        self.assertEqual(task.convert_fractional_part(num), 0.4)
+        self.assertIsInstance(task.convert_fractional_part(num), float)
+
+    def test4(self):
+        num = '0'
+        self.assertEqual(task.convert_fractional_part(num), 0.0)
+        self.assertIsInstance(task.convert_fractional_part(num), float)
+
+
 class TestValidNumber(unittest.TestCase):
     def test1(self):
         num = ''
@@ -276,6 +335,32 @@ class TestValidHexadecimal(unittest.TestCase):
     def test7(self):
         num = '-0xFDE5'
         self.assertEqual(task.valid_hexadecimal(num), True)
+
+    def test8(self):
+        num = '-0X2b'
+        self.assertEqual(task.valid_hexadecimal(num), True)
+
+
+# Tests for get_full_date() function. Tests output.
+class TestGetFullDate(unittest.TestCase):
+
+    def test_1(self):
+        self.assertTrue(task.get_full_date(0, 0, 0), True)
+
+    def test_2(self):
+        self.assertTrue(task.get_full_date(10, 27, 2020), True)
+
+    def test_3(self):
+        self.assertTrue(task.get_full_date(6, 30, 1995), True)
+
+    def test_4(self):
+        self.assertTrue(task.get_full_date(11, 18, 1980), True)
+
+    def test_5(self):
+        self.assertTrue(task.get_full_date(1, 1, 1695), True)
+
+    def test_6(self):
+        self.assertTrue(task.get_full_date(7, 5, 1991), True)
 
 
 if __name__ == '__main__':
