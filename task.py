@@ -39,7 +39,7 @@ def conv_to_hex_values(hex_list):
     """Function #3 Helper Function
     Name: conv_to_hex_values
     Purpose: Converts integer values into their hexadecimal string equivalents
-    and returns them in a list, adding a leading zero if necessary
+    and returns them in a list
     Precondition: A list of integer values, each corresponding to a valid
     base 16 value, passed as a parameter
     Postcondition: A list of string values, each corresponding to a
