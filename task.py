@@ -48,7 +48,7 @@ def conv_num():
 def value_of_char(char):
     """
     Takes a single character of 0-9, A-F, or a-f and returns the
-    intger value of that character.
+    integer value of that character.
     """
     ascii_value = ord(char.lower())
 
