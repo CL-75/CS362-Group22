@@ -132,7 +132,8 @@ def valid_hexadecimal(num_str):
 def get_full_date(month, day, yr):
     """
     For output use.
-    Converts the given month, day, and year into
+    Input: A month, day, and year in integer form
+    Output: Converts the input into
     the proper string for output.
     """
     temp_date = str(month) + "-"
@@ -148,3 +149,34 @@ def get_full_date(month, day, yr):
     temp_date = temp_date + str(day) + "-" + str(yr)
 
     return temp_date
+
+
+# Getting number of days from seconds in a day
+def get_days(num_sec):
+    """
+    Input: Number of seconds
+    Output: Number of days based off input
+    """
+    # Seconds in a day
+    seconds = 86400
+    days = 0
+
+    while num_sec >= seconds:
+        num_sec -= seconds
+        days += 1
+
+    return days
+
+
+# Getting amount years from and input of days
+def get_years(days):
+    """
+    Input: a number of days
+    Output: Number of years rounded to the nearest
+    tenth as well as the number of input days.
+    """
+    years = days / 365
+
+    return round(years, 1), days
+    # return "%.1f" % (years,), days
+    # Not sure which return is best right now, can check later
