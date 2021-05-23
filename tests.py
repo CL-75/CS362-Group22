@@ -345,22 +345,172 @@ class TestValidHexadecimal(unittest.TestCase):
 class TestGetFullDate(unittest.TestCase):
 
     def test_1(self):
-        self.assertTrue(task.get_full_date(0, 0, 0), True)
+        month = 0
+        day = 0
+        yr = 0
+        expected = '00-00-0'
+        self.assertEqual(task.get_full_date(month, day, yr), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_full_date(month, day, yr)))
 
     def test_2(self):
-        self.assertTrue(task.get_full_date(10, 27, 2020), True)
+        month = 10
+        day = 27
+        yr = 2020
+        expected = '10-27-2020'
+        self.assertEqual(task.get_full_date(month, day, yr), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_full_date(month, day, yr)))
 
     def test_3(self):
-        self.assertTrue(task.get_full_date(6, 30, 1995), True)
+        month = 6
+        day = 30
+        yr = 2019
+        expected = '06-30-2019'
+        self.assertEqual(task.get_full_date(month, day, yr), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_full_date(month, day, yr)))
 
     def test_4(self):
-        self.assertTrue(task.get_full_date(11, 18, 1980), True)
+        month = 11
+        day = 18
+        yr = 1995
+        expected = '11-18-1995'
+        self.assertEqual(task.get_full_date(month, day, yr), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_full_date(month, day, yr)))
 
     def test_5(self):
-        self.assertTrue(task.get_full_date(1, 1, 1695), True)
+        month = 1
+        day = 1
+        yr = 1695
+        expected = '01-01-1695'
+        self.assertEqual(task.get_full_date(month, day, yr), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_full_date(month, day, yr)))
 
     def test_6(self):
-        self.assertTrue(task.get_full_date(7, 5, 1991), True)
+        month = 7
+        day = 5
+        yr = 1991
+        expected = '07-05-1991'
+        self.assertEqual(task.get_full_date(month, day, yr), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_full_date(month, day, yr)))
+
+
+# Tests for get_days() function. Tests proper number of days is printed
+#  based on input in seconds.
+class TestGetDays(unittest.TestCase):
+
+    def test_1(self):
+        data = 172800
+        expected = 2
+        self.assertEqual(task.get_days(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_days(data)))
+
+    def test_2(self):
+        data = 0
+        expected = 0
+        self.assertEqual(task.get_days(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_days(data)))
+
+    def test_3(self):
+        data = 31540000
+        expected = 365
+        self.assertEqual(task.get_days(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_days(data)))
+
+    def test_4(self):
+        data = 604800
+        expected = 7
+        self.assertEqual(task.get_days(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_days(data)))
+
+    def test_5(self):
+        data = 8640000
+        expected = 100
+        self.assertEqual(task.get_days(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_days(data)))
+
+    def test_6(self):
+        data = 86400000
+        expected = 1000
+        self.assertEqual(task.get_days(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_days(data)))
+
+    def test_7(self):
+        data = 90000
+        expected = 1
+        self.assertEqual(task.get_days(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_days(data)))
+
+
+# Test class for get_years() function. Tests input and expected output.
+class TestGetYears(unittest.TestCase):
+
+    def test_1(self):
+        data = 365
+        expected = 1.0, 365
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
+
+    def test_2(self):
+        data = 912.5
+        expected = 2.5, 912.5
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
+
+    def test_3(self):
+        data = 3650
+        expected = 10.0, 3650
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
+
+    def test_4(self):
+        data = 18250
+        expected = 50.0, 18250
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
+
+    def test_5(self):
+        data = 0
+        expected = 0.0, 0
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
+
+    def test_6(self):
+        data = 18250000
+        expected = 50000.0, 18250000
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
+
+    def test_7(self):
+        data = 20
+        expected = 0.1, 20
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
+
+    def test_8(self):
+        data = 15622
+        expected = 42.8, 15622
+        self.assertEqual(task.get_years(data), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_years(data)))
 
 
 if __name__ == '__main__':
