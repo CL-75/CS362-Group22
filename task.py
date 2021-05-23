@@ -28,10 +28,29 @@ def dec_to_base16(num1):
         num1 = num1 * -1
     while num1 >= 16:
         new_mod = int(num1 % 16)
-        hex_list.append(new_mod)
+        hex_list.insert(0, new_mod)
         num1 = int(num1 / 16)
-    hex_list.append(num1)
-    hex_list = hex_list[::-1]
+    hex_list.insert(0, num1)
+
+    return hex_list
+
+
+def conv_to_hex_values(hex_list):
+    """Function #3 Helper Function
+    Name: conv_to_hex_values
+    Purpose: Converts integer values into their hexadecimal string equivalents
+    and returns them in a list
+    Precondition: A list of integer values, each corresponding to a valid
+    base 16 value, passed as a parameter
+    Postcondition: A list of string values, each corresponding to a
+    hexadecimal value returned to the calling function
+    """
+    hex_dict = {15: 'F', 14: 'E', 13: 'D', 12: 'C', 11: 'B', 10: 'A', 9: '9',
+                8: '8',
+                7: '7', 6: '6', 5: '5', 4: '4', 3: '3', 2: '2', 1: '1', 0: '0'}
+
+    hex_list = [v for i in range(len(hex_list)) for k, v in hex_dict.items()
+                if k == hex_list[i]]
 
     return hex_list
 
@@ -48,7 +67,7 @@ def conv_num():
 def value_of_char(char):
     """
     Takes a single character of 0-9, A-F, or a-f and returns the
-    intger value of that character.
+    integer value of that character.
     """
     ascii_value = ord(char.lower())
 
