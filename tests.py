@@ -341,6 +341,10 @@ class TestValidHexadecimal(unittest.TestCase):
         self.assertEqual(task.valid_hexadecimal(num), True)
 
 
+##########
+# Tests for Function #3: my_datetime()
+##########
+
 # Tests for get_full_date() function. Tests output.
 class TestGetFullDate(unittest.TestCase):
 
@@ -458,59 +462,127 @@ class TestGetYears(unittest.TestCase):
 
     def test_1(self):
         data = 365
-        expected = 1.0, 365
+        expected = 1, 0
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
 
     def test_2(self):
         data = 912.5
-        expected = 2.5, 912.5
+        expected = 2, 0.5
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
 
     def test_3(self):
-        data = 3650
-        expected = 10.0, 3650
+        data = 3656
+        expected = 10, 6
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
 
     def test_4(self):
-        data = 18250
-        expected = 50.0, 18250
+        data = 56741
+        expected = 155, 5
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
 
     def test_5(self):
         data = 0
-        expected = 0.0, 0
+        expected = 0, 0
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
 
     def test_6(self):
-        data = 18250000
-        expected = 50000.0, 18250000
+        data = 18250020
+        expected = 50000, 6
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
 
     def test_7(self):
         data = 20
-        expected = 0.1, 20
+        expected = 0, 20
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
 
     def test_8(self):
         data = 15622
-        expected = 42.8, 15622
+        expected = 42, 5
         self.assertEqual(task.get_years(data), expected,
                          msg='expected {} got {}'.format(expected,
                          task.get_years(data)))
+
+
+# Tests for get_date_from_epoch() function. Tests input and expected output.
+class TestGetDateFromEpoch(unittest.TestCase):
+
+    def test_1(self):
+        years = 0
+        days = 0
+        expected = 1, 1, 1970
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
+
+    def test_2(self):
+        years = 500
+        days = 30
+        expected = 1, 31, 2470
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
+
+    def test_3(self):
+        years = 5
+        days = 700
+        expected = 12, 1, 1976
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
+
+    def test_4(self):
+        years = 6004
+        days = 291
+        expected = 10, 19, 7974
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
+
+    def test_5(self):
+        years = 1
+        days = 1000
+        expected = 9, 27, 1973
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
+
+    def test_6(self):
+        years = 0
+        days = 9578
+        expected = 3, 23, 1996
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
+
+    def test_7(self):
+        years = 234
+        days = 183
+        expected = 7, 2, 2204
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
+
+    def test_8(self):
+        years = 374
+        days = 542
+        expected = 6, 26, 2345
+        self.assertEqual(task.get_date_from_epoch(years, days), expected,
+                         msg='expected {} got {}'.format(expected,
+                         task.get_date_from_epoch(years, days)))
 
 
 if __name__ == '__main__':
