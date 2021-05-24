@@ -1,4 +1,4 @@
-import re
+import string
 
 
 def is_num_negative(num):
@@ -117,13 +117,28 @@ def valid_number(num_str):
     return False
 
 
+def strip_negative_sign(num_str):
+    """
+    Takes a string as input and strips the the first character off
+    off the string if it is a negative sign. Leaves the string
+    unchanged otherwise.
+    """
+    if num_str[0] == '-':
+        num_str = num_str[1:]
+
+    return num_str
+
+
 def valid_integer(num_str):
     """
     Takes a string as input and returns True if the string represents a valid
     integer. Returns False otherwise.
     """
-    match = re.match(r'^-?[0-9]+$', num_str)
-    return match is not None
+    if len(num_str) == 0:
+        return False
+
+    num_str = strip_negative_sign(num_str)
+    return all(char in string.digits for char in num_str)
 
 
 def valid_decimal(num_str):
@@ -131,8 +146,24 @@ def valid_decimal(num_str):
     Takes a string as input and returns True if the string represents a valid
     decimal number. Returns False otherwise.
     """
-    match = re.match(r'^(?=.*?[0-9])-?[0-9]*\.[0-9]*$', num_str)
-    return match is not None
+    if len(num_str) == 0:
+        return False
+
+    num_str = strip_negative_sign(num_str)
+    try:
+        integral, decimal = num_str.split('.')
+
+        if len(integral) == 0:
+            return valid_integer(decimal)
+
+        if len(decimal) == 0:
+            return valid_integer(integral)
+
+        return valid_integer(integral) and valid_integer(decimal)
+
+    # Value error is raised if num_str doesn't have exactly one decimal point
+    except ValueError:
+        return False
 
 
 def valid_hexadecimal(num_str):
@@ -140,8 +171,14 @@ def valid_hexadecimal(num_str):
     Takes a string as input and returns True if the string represents a valid
     hexadecimal number. Returns False otherwise.
     """
-    match = re.match(r'^-?0[xX][0-9a-fA-F]*$', num_str)
-    return match is not None
+    if len(num_str) == 0:
+        return False
+
+    num_str = strip_negative_sign(num_str)
+    if not num_str.lower().startswith('0x'):
+        return False
+
+    return all(char in string.hexdigits for char in num_str[2:])
 
 
 ##########
