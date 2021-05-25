@@ -162,6 +162,48 @@ class TestConvDecToHexValues(unittest.TestCase):
                                                          (input1)))
 
 
+# Function #3 testing for pad_hex_list()
+class TestPadHexList(unittest.TestCase):
+    # Pass a list with one value to make sure the list is padded correctly
+    def test1(self):
+        input1 = ['0']
+        expected = ['0', '0']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test2(self):
+        # Pass a list with an even number of values to make sure the list
+        # is left untouched
+        input1 = ['0', '0']
+        expected = ['0', '0']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test3(self):
+        # Pass a list of hex string values equivalent to the largest
+        # 32-bit int to make sure it is handled correctly
+        input1 = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        expected = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test4(self):
+        # Pass a list of values corresponding to the lecture example to
+        # make sure it is padded correctly
+        input1 = ['E', '9', '1', 'A', '2']
+        expected = ['0', 'E', '9', '1', 'A', '2']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+
 class TestConvertIntegeralPart(unittest.TestCase):
     def test1(self):
         num = '6'
