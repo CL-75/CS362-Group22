@@ -189,23 +189,19 @@ def get_days(num_sec):
     return days
 
 
-# Getting amount years and days left over from an input of days
-# Code cited from: https://www.geeksforgeeks.org/program-convert-
-# given-number-days-terms-years-weeks-days/
-def get_years(days):
-    """
-    Input: a number of days
+# Getting 400 year sequences for easier computation
+# 400 was the easiest sequence to use, tried 300, 500, etc.
+def get_sequence(days):
+    # https://en.wikipedia.org/wiki/Solar_cycle_(calendar)
+    years = 0
+    days_in_years = 146097
 
-    Output: Number of years and days left over
-    (i.e. input of 366 days = output of 1 year, 1 day)
-    """
-    if days >= 365:
-        years = int(days / 365)
-        days_left = (days % 365) % 7
-        return years, days_left
+    while days >= days_in_years:
+        days -= days_in_years
 
-    else:
-        return 0, days
+        years += 400
+
+    return years, days
 
 
 # Getting specific date from epoch date based on input of years and days
@@ -219,13 +215,14 @@ def get_date_from_epoch(years, days):
     (i.e. an input of 10 years, 50 days will return the specific date
     of 10 years and 50 days from 1/1/1970)
     """
+    cur_day = 1
+    cur_month = 1
+    # Epoch year + years
+    cur_year = 1970 + years
+
     # Making lists for days in each month for leap years and regular years
     leapyear_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    cur_day = 1
-    cur_month = 1
-    # Epoch year
-    cur_year = 1970 + years
 
     while days:
         cal = month_days
@@ -249,7 +246,24 @@ def get_date_from_epoch(years, days):
                 cur_year += 1
 
             cur_day = 0
+
         cur_day += 1
+
         days -= 1
 
     return cur_month, cur_day, cur_year
+
+
+# Main function. Getting a specific date from epoch based on input of seconds
+def my_datetime(num_sec):
+    """
+    Input: Number of seconds starting from epoch date, 01-01-1970
+
+    Output: Specific date
+    """
+    days = get_days(num_sec)
+    years, days = get_sequence(days)
+    month, day, yr = get_date_from_epoch(years, days)
+    date = get_full_date(month, day, yr)
+
+    return date
