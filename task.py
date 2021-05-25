@@ -189,6 +189,7 @@ def get_full_date(month, day, yr):
     """
     For output use.
     Input: A month, day, and year in integer form
+
     Output: Converts the input into
     the proper string for output.
     """
@@ -211,6 +212,7 @@ def get_full_date(month, day, yr):
 def get_days(num_sec):
     """
     Input: Number of seconds
+
     Output: Number of days based off input
     """
     # Seconds in a day
@@ -224,15 +226,81 @@ def get_days(num_sec):
     return days
 
 
-# Getting amount years from and input of days
-def get_years(days):
-    """
-    Input: a number of days
-    Output: Number of years rounded to the nearest
-    tenth as well as the number of input days.
-    """
-    years = days / 365
+# Getting 400 year sequences for easier computation
+# 400 was the easiest sequence to use, tried 300, 500, etc.
+def get_sequence(days):
+    # https://en.wikipedia.org/wiki/Solar_cycle_(calendar)
+    years = 0
+    days_in_years = 146097
 
-    return round(years, 1), days
-    # return "%.1f" % (years,), days
-    # Not sure which return is best right now, can check later
+    while days >= days_in_years:
+        days -= days_in_years
+
+        years += 400
+
+    return years, days
+
+
+# Getting specific date from epoch date based on input of years and days
+# https://www.epochconverter.com/
+def get_date_from_epoch(years, days):
+    """
+    Input: A number of years and number of days
+
+    Output: The specific date from the epoch (1/1/1970)
+    based on input years and days.
+    (i.e. an input of 10 years, 50 days will return the specific date
+    of 10 years and 50 days from 1/1/1970)
+    """
+    cur_day = 1
+    cur_month = 1
+    # Epoch year + years
+    cur_year = 1970 + years
+
+    # Making lists for days in each month for leap years and regular years
+    leapyear_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    while days:
+        cal = month_days
+# https://en.wikipedia.org/wiki/Leap_year
+# If a year is exactly divisible by 4, it is a leap year
+# It is also a leap year if it exactly divisible by exactly 100 and 400 as well
+        if cur_year % 4 == 0:
+            cal = leapyear_days
+
+        elif cur_year % 400 == 0:
+            cal = month_days
+
+        elif cur_year % 100 == 0:
+            cal = leapyear_days
+
+        if cur_day == cal[cur_month-1]:
+            cur_month += 1
+            # Signals end of the year
+            if cur_month == 13:
+                cur_month = 1
+                cur_year += 1
+
+            cur_day = 0
+
+        cur_day += 1
+
+        days -= 1
+
+    return cur_month, cur_day, cur_year
+
+
+# Main function. Getting a specific date from epoch based on input of seconds
+def my_datetime(num_sec):
+    """
+    Input: Number of seconds starting from epoch date, 01-01-1970
+
+    Output: Specific date
+    """
+    days = get_days(num_sec)
+    years, days = get_sequence(days)
+    month, day, yr = get_date_from_epoch(years, days)
+    date = get_full_date(month, day, yr)
+
+    return date
