@@ -46,11 +46,27 @@ def conv_to_hex_values(hex_list):
     hexadecimal value returned to the calling function
     """
     hex_dict = {15: 'F', 14: 'E', 13: 'D', 12: 'C', 11: 'B', 10: 'A', 9: '9',
-                8: '8',
-                7: '7', 6: '6', 5: '5', 4: '4', 3: '3', 2: '2', 1: '1', 0: '0'}
+                8: '8', 7: '7', 6: '6', 5: '5', 4: '4', 3: '3', 2: '2',
+                1: '1', 0: '0'}
 
     hex_list = [v for i in range(len(hex_list)) for k, v in hex_dict.items()
                 if k == hex_list[i]]
+
+    return hex_list
+
+
+def pad_hex_list(hex_list):
+    """Function #3 Helper Function
+    Name: pad_hex_list
+    Purpose: Adds a leading '0' character, to any odd length lists, to ensure
+    the correct grouping of hexadecimal bytes in the final output string
+    Precondition: A list of hexadecimal string values passed as a parameter
+    Postcondition: A list of hexadecimal string values, with a '0' character
+    inserted into index 0, if the original list is of odd length,
+    or the original list, untouched, returned to the calling function
+    """
+    if len(hex_list) % 2 != 0:
+        hex_list.insert(0, '0')
 
     return hex_list
 
