@@ -71,6 +71,32 @@ def pad_hex_list(hex_list):
     return hex_list
 
 
+def format_hex_list(hex_list):
+    """Function #3 Helper Function
+    Name: hex_format_list
+    Purpose: Combines hexadecimal digits (nibbles) into bytes and returns
+    them in a list
+    Precondition: A list of valid hexadecimal string digits passed as a
+    parameter
+    Postcondition: A list of hexadecimal byte string values returned to the
+    calling function
+    """
+    formatted_list = []
+    temp_str = ""
+    count = 1
+    for i in range(len(hex_list)):
+        if count % 2 == 0:
+            temp_str = temp_str + "".join(hex_list[i])
+            formatted_list.append(temp_str)
+            temp_str = ""
+            count += 1
+        else:
+            temp_str = temp_str + "".join(hex_list[i])
+            count += 1
+
+    return formatted_list
+
+
 def conv_num():
     """
     Takes a string as input and converts the string into a number and
