@@ -162,6 +162,104 @@ class TestConvDecToHexValues(unittest.TestCase):
                                                          (input1)))
 
 
+# Function #3 testing for pad_hex_list()
+class TestPadHexList(unittest.TestCase):
+    # Pass a list with one value to make sure the list is padded correctly
+    def test1(self):
+        input1 = ['0']
+        expected = ['0', '0']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test2(self):
+        # Pass a list with an even number of values to make sure the list
+        # is left untouched
+        input1 = ['0', '0']
+        expected = ['0', '0']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test3(self):
+        # Pass a list of hex string values equivalent to the largest
+        # 32-bit int to make sure it is handled correctly
+        input1 = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        expected = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test4(self):
+        # Pass a list of values corresponding to the lecture example to
+        # make sure it is padded correctly
+        input1 = ['E', '9', '1', 'A', '2']
+        expected = ['0', 'E', '9', '1', 'A', '2']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+
+# Function #3 Testing for format_hex_list()
+class TestFormatHexList(unittest.TestCase):
+    # Pass a list containing two hex digit string values to make sure
+    # that they are formatted correctly into one byte value
+    def test1(self):
+        input1 = ['0', '0']
+        expected = ['00']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing four hex digit string values to make sure
+    # that they are formatted correctly into two byte values
+    def test2(self):
+        input1 = ['2', '3', '7', '8']
+        expected = ['23', '78']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing hex digit, string values, equivalent to the
+    # largest 32-bit pos integer, to make sure that they are formatted
+    # correctly
+    def test3(self):
+        input1 = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        expected = ['7F', 'FF', 'FF', 'FF']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing hex digit, string values, equivalent to the
+    # big endian lecture example, to make sure that they are formatted
+    # correctly
+    def test4(self):
+        input1 = ['0', 'E', '9', '1', 'A', '2']
+        expected = ['0E', '91', 'A2']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing hex digit, string values, equivalent to the
+    # little endian lecture example, to make sure that they are formatted
+    # correctly
+    def test5(self):
+        input1 = ['A', '2', '9', '1', '0', 'E']
+        expected = ['A2', '91', '0E']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+
 class TestConvertIntegeralPart(unittest.TestCase):
     def test1(self):
         num = '6'
