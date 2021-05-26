@@ -1,5 +1,15 @@
 import unittest
 import task
+import random
+
+
+# Function for building random test cases
+def build_test_func(expected, test_case, func_under_test, message):
+    def test(self):
+        result = func_under_test(test_case)
+        self.assertEqual(expected, result, message.format(
+            test_case, expected, result))
+    return test
 
 
 # Function #3 Testing for is_num_negative() Function
@@ -162,6 +172,28 @@ class TestConvDecToHexValues(unittest.TestCase):
                                                          (input1)))
 
 
+# Function #1 Testing for conv_num() function
+class TestConvNumRandom(unittest.TestCase):
+    pass
+
+
+def generate_conv_num_test_cases(tests_to_generate=1000):
+    for _ in range(tests_to_generate):
+        num_type = random.choice(['integer', 'decimal', 'hexadecimal'])
+        num = random.randint(0, 1000000)
+        if num_type == 'integer':
+            num_str = str(num)
+        elif num_type == 'hexadecimal':
+            num_str = hex(num)
+        else:
+            num = num + random.random()
+            num_str = str(num)
+        msg = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_test_func(num, num_str, task.conv_num, msg)
+        setattr(TestConvNumRandom, f'test_{num_str}', new_test)
+
+
+# Function #1 Testing for conv_num() function
 class TestConvNum(unittest.TestCase):
     def test1(self):
         num = ''
@@ -235,6 +267,7 @@ class TestConvNum(unittest.TestCase):
         self.assertIsInstance(task.conv_num(num), float)
 
 
+# Function #1 Testing for convert_integral_part() function
 class TestConvertIntegeralPart(unittest.TestCase):
     def test1(self):
         num = '6'
@@ -272,6 +305,7 @@ class TestConvertIntegeralPart(unittest.TestCase):
         self.assertIsInstance(task.convert_integral_part(num), int)
 
 
+# Function #1 Testing for convert_fractional_part() function
 class TestConvertFractionalPart(unittest.TestCase):
     def test1(self):
         num = '945'
@@ -294,6 +328,7 @@ class TestConvertFractionalPart(unittest.TestCase):
         self.assertIsInstance(task.convert_fractional_part(num), float)
 
 
+# Function #1 Testing for valid_number() function
 class TestValidNumber(unittest.TestCase):
     def test1(self):
         num = ''
@@ -316,6 +351,7 @@ class TestValidNumber(unittest.TestCase):
         self.assertEqual(task.valid_number(num), False)
 
 
+# Function #1 Testing for valid_integer() function
 class TestValidInteger(unittest.TestCase):
     def test1(self):
         num = ''
@@ -346,6 +382,7 @@ class TestValidInteger(unittest.TestCase):
         self.assertEqual(task.valid_integer(num), False)
 
 
+# Function #1 Testing for valid_decimal() function
 class TestValidDecimal(unittest.TestCase):
     def test1(self):
         num = '.'
@@ -380,6 +417,7 @@ class TestValidDecimal(unittest.TestCase):
         self.assertEqual(task.valid_decimal(num), False)
 
 
+# Function #1 Testing for valid_hexadecimal() function
 class TestValidHexadecimal(unittest.TestCase):
     def test1(self):
         num = ''
@@ -591,4 +629,5 @@ class TestGetYears(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    generate_conv_num_test_cases()
     unittest.main(verbosity=2)
