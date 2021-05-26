@@ -162,6 +162,79 @@ class TestConvDecToHexValues(unittest.TestCase):
                                                          (input1)))
 
 
+class TestConvNum(unittest.TestCase):
+    def test1(self):
+        num = ''
+        self.assertIsNone(task.conv_num(num))
+
+    def test2(self):
+        num = '0'
+        self.assertEqual(task.conv_num(num), 0)
+        self.assertIsInstance(task.conv_num(num), int)
+
+    def test3(self):
+        num = '.0'
+        self.assertEqual(task.conv_num(num), 0.0)
+        self.assertIsInstance(task.conv_num(num), float)
+
+    def test4(self):
+        num = '0x0'
+        self.assertEqual(task.conv_num(num), 0)
+        self.assertIsInstance(task.conv_num(num), int)
+
+    def test5(self):
+        num = '.0.'
+        self.assertIsNone(task.conv_num(num))
+
+    def test6(self):
+        num = 'F0'
+        self.assertIsNone(task.conv_num(num))
+
+    def test7(self):
+        num = 0
+        self.assertIsNone(task.conv_num(num))
+
+    def test8(self):
+        num = '1000'
+        self.assertEqual(task.conv_num(num), 1000)
+        self.assertIsInstance(task.conv_num(num), int)
+
+    def test9(self):
+        num = '1000.99'
+        self.assertEqual(task.conv_num(num), 1000.99)
+        self.assertIsInstance(task.conv_num(num), float)
+
+    def test10(self):
+        num = '0X3e8'
+        self.assertEqual(task.conv_num(num), 1000)
+        self.assertIsInstance(task.conv_num(num), int)
+
+    def test11(self):
+        num = '-5297'
+        self.assertEqual(task.conv_num(num), -5297)
+        self.assertIsInstance(task.conv_num(num), int)
+
+    def test12(self):
+        num = '-6467.185'
+        self.assertEqual(task.conv_num(num), -6467.185)
+        self.assertIsInstance(task.conv_num(num), float)
+
+    def test13(self):
+        num = '-0xd8B7'
+        self.assertEqual(task.conv_num(num), -55479)
+        self.assertIsInstance(task.conv_num(num), int)
+
+    def test14(self):
+        num = '10.'
+        self.assertEqual(task.conv_num(num), 10.0)
+        self.assertIsInstance(task.conv_num(num), float)
+
+    def test15(self):
+        num = '-.87'
+        self.assertEqual(task.conv_num(num), -0.87)
+        self.assertIsInstance(task.conv_num(num), float)
+
+
 class TestConvertIntegeralPart(unittest.TestCase):
     def test1(self):
         num = '6'
@@ -338,6 +411,10 @@ class TestValidHexadecimal(unittest.TestCase):
 
     def test8(self):
         num = '-0X2b'
+        self.assertEqual(task.valid_hexadecimal(num), True)
+
+    def test9(self):
+        num = '0x0'
         self.assertEqual(task.valid_hexadecimal(num), True)
 
 
