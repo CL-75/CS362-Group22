@@ -55,7 +55,7 @@ def conv_to_hex_values(hex_list):
     return hex_list
 
 
-list(hex_list):
+def pad_hex_list(hex_list):
     """Function #3 Helper Function
     Name: pad_hex_list
     Purpose: Adds a leading '0' character, to any odd length lists, to ensure
