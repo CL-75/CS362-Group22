@@ -97,13 +97,35 @@ def format_hex_list(hex_list):
     return formatted_list
 
 
-def conv_num():
+def conv_num(num_str):
     """
     Takes a string as input and converts the string into a number and
     returns the number. Returns None if the string is not a valid number
     or if the input is not a string.
     """
-    pass
+    if type(num_str) != str or len(num_str) == 0:
+        return
+
+    num_type = valid_number(num_str)
+    negative_factor = 1
+    if num_str[0] == '-':
+        negative_factor = -1
+        num_str = num_str[1:]
+
+    if num_type == 'integer':
+        return convert_integral_part(num_str) * negative_factor
+
+    if num_type == 'hexadecimal':
+        return convert_integral_part(num_str[2:], base=16) * negative_factor
+
+    if num_type == 'decimal':
+        integral_str, decimal_str = num_str.split('.')
+
+        # Zero padding strings in case they are empty
+        integral = convert_integral_part('0' + integral_str)
+        decimal = convert_fractional_part(decimal_str + '0')
+
+        return (integral + decimal) * negative_factor
 
 
 def value_of_char(char):
