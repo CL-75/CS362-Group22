@@ -380,6 +380,78 @@ class TestConvEndian(unittest.TestCase):
                                                          (input1, input2)))
 
 
+# Function #3 Dynamic Random Testing Class
+class TestFunc3Random(unittest.TestCase):
+    pass
+
+
+# Function #3 dynamic random testing function
+def build_test_func3(expected, test_case, order, func_under_test, message):
+    def test(self):
+        result = func_under_test(test_case, order)
+        self.assertEqual(expected, result, message.format(test_case,
+                                                          expected, result))
+
+    return test
+
+
+# Generates 10000 random integers and calculates expected hex values,
+# alternating byte order with each test, to test and verify
+# the output of function #3
+def random_hex_values(tests_to_gen=10000):
+    for i in range(tests_to_gen):
+        is_negative = False
+        # Alternate byte order after each test
+        if i % 2 == 0:
+            input2 = 'big'
+        else:
+            input2 = 'little'
+        rand_int = random.randint(-2147483647, 2147483647)
+        hex_val = hex(rand_int)
+        hex_val = str(hex_val)
+        # remove unwanted characters after hex method called
+        hex_val = hex_val.replace('x', '')
+        if rand_int > 0:
+            if len(hex_val) % 2 != 0:
+                hex_val = hex_val[1:]
+        if rand_int < 0:
+            if len(hex_val) % 2 == 0:
+                hex_val = hex_val[0] + hex_val[2:]
+        # format final string
+        final_str = ""
+        if rand_int >= 0:
+            count = 0
+            for n in hex_val:
+                if count > 0 and count % 2 == 0:
+                    final_str = final_str + ' '
+                final_str = final_str + n
+                count += 1
+        elif rand_int < 0:
+            is_negative = True
+            count = 0
+            hex_val = hex_val.replace('-', "")
+            for v in hex_val:
+                if count > 0 and count % 2 == 0:
+                    final_str = final_str + ' '
+                final_str = final_str + v
+                count += 1
+        final_str = final_str.upper()
+        # reverse byte order if necessary
+        if input2 == 'little':
+            list1 = final_str.split()
+            list1 = list1[::-1]
+            final_str = ' '.join([i for i in list1])
+        # add minus sign to any negative numbers
+        if is_negative:
+            final_str = '-' + final_str
+        input1 = rand_int
+        expected = final_str
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_test_func3(expected, input1, input2, task.conv_endian,
+                                    message)
+        setattr(TestFunc3Random, 'test_{}_{}'.format(input1, input2), new_test)
+
+
 # Function #1 Testing for conv_num() function
 class TestConvNumRandom(unittest.TestCase):
     pass
@@ -949,5 +1021,6 @@ class TestMyDateTime(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    random_hex_values()
     generate_conv_num_test_cases()
     unittest.main(verbosity=2)
