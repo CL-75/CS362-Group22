@@ -46,13 +46,55 @@ def conv_to_hex_values(hex_list):
     hexadecimal value returned to the calling function
     """
     hex_dict = {15: 'F', 14: 'E', 13: 'D', 12: 'C', 11: 'B', 10: 'A', 9: '9',
-                8: '8',
-                7: '7', 6: '6', 5: '5', 4: '4', 3: '3', 2: '2', 1: '1', 0: '0'}
+                8: '8', 7: '7', 6: '6', 5: '5', 4: '4', 3: '3', 2: '2',
+                1: '1', 0: '0'}
 
     hex_list = [v for i in range(len(hex_list)) for k, v in hex_dict.items()
                 if k == hex_list[i]]
 
     return hex_list
+
+
+list(hex_list):
+    """Function #3 Helper Function
+    Name: pad_hex_list
+    Purpose: Adds a leading '0' character, to any odd length lists, to ensure
+    the correct grouping of hexadecimal bytes in the final output string
+    Precondition: A list of hexadecimal string values passed as a parameter
+    Postcondition: A list of hexadecimal string values, with a '0' character
+    inserted into index 0, if the original list is of odd length,
+    or the original list, untouched, returned to the calling function
+    """
+    if len(hex_list) % 2 != 0:
+        hex_list.insert(0, '0')
+
+    return hex_list
+
+
+def format_hex_list(hex_list):
+    """Function #3 Helper Function
+    Name: hex_format_list
+    Purpose: Combines hexadecimal digits (nibbles) into bytes and returns
+    them in a list
+    Precondition: A list of valid hexadecimal string digits passed as a
+    parameter
+    Postcondition: A list of hexadecimal byte string values returned to the
+    calling function
+    """
+    formatted_list = []
+    temp_str = ""
+    count = 1
+    for i in range(len(hex_list)):
+        if count % 2 == 0:
+            temp_str = temp_str + "".join(hex_list[i])
+            formatted_list.append(temp_str)
+            temp_str = ""
+            count += 1
+        else:
+            temp_str = temp_str + "".join(hex_list[i])
+            count += 1
+
+    return formatted_list
 
 
 def conv_num(num_str):
@@ -211,6 +253,7 @@ def get_full_date(month, day, yr):
     """
     For output use.
     Input: A month, day, and year in integer form
+
     Output: Converts the input into
     the proper string for output.
     """
@@ -233,6 +276,7 @@ def get_full_date(month, day, yr):
 def get_days(num_sec):
     """
     Input: Number of seconds
+
     Output: Number of days based off input
     """
     # Seconds in a day
@@ -246,15 +290,81 @@ def get_days(num_sec):
     return days
 
 
-# Getting amount years from and input of days
-def get_years(days):
-    """
-    Input: a number of days
-    Output: Number of years rounded to the nearest
-    tenth as well as the number of input days.
-    """
-    years = days / 365
+# Getting 400 year sequences for easier computation
+# 400 was the easiest sequence to use, tried 300, 500, etc.
+def get_sequence(days):
+    # https://en.wikipedia.org/wiki/Solar_cycle_(calendar)
+    years = 0
+    days_in_years = 146097
 
-    return round(years, 1), days
-    # return "%.1f" % (years,), days
-    # Not sure which return is best right now, can check later
+    while days >= days_in_years:
+        days -= days_in_years
+
+        years += 400
+
+    return years, days
+
+
+# Getting specific date from epoch date based on input of years and days
+# https://www.epochconverter.com/
+def get_date_from_epoch(years, days):
+    """
+    Input: A number of years and number of days
+
+    Output: The specific date from the epoch (1/1/1970)
+    based on input years and days.
+    (i.e. an input of 10 years, 50 days will return the specific date
+    of 10 years and 50 days from 1/1/1970)
+    """
+    cur_day = 1
+    cur_month = 1
+    # Epoch year + years
+    cur_year = 1970 + years
+
+    # Making lists for days in each month for leap years and regular years
+    leapyear_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    while days:
+        cal = month_days
+# https://en.wikipedia.org/wiki/Leap_year
+# If a year is exactly divisible by 4, it is a leap year
+# It is also a leap year if it exactly divisible by exactly 100 and 400 as well
+        if cur_year % 4 == 0:
+            cal = leapyear_days
+
+        elif cur_year % 400 == 0:
+            cal = month_days
+
+        elif cur_year % 100 == 0:
+            cal = leapyear_days
+
+        if cur_day == cal[cur_month-1]:
+            cur_month += 1
+            # Signals end of the year
+            if cur_month == 13:
+                cur_month = 1
+                cur_year += 1
+
+            cur_day = 0
+
+        cur_day += 1
+
+        days -= 1
+
+    return cur_month, cur_day, cur_year
+
+
+# Main function. Getting a specific date from epoch based on input of seconds
+def my_datetime(num_sec):
+    """
+    Input: Number of seconds starting from epoch date, 01-01-1970
+
+    Output: Specific date
+    """
+    days = get_days(num_sec)
+    years, days = get_sequence(days)
+    month, day, yr = get_date_from_epoch(years, days)
+    date = get_full_date(month, day, yr)
+
+    return date
