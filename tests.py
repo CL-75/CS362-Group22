@@ -3,15 +3,6 @@ import task
 import random
 
 
-# Function for building random test cases
-def build_test_func(expected, test_case, func_under_test, message):
-    def test(self):
-        result = func_under_test(test_case)
-        self.assertEqual(expected, result, message.format(
-            test_case, expected, result))
-    return test
-
-
 # Function #3 Testing for is_num_negative() Function
 class TestIsNumNegative(unittest.TestCase):
     # Test Function #3 is_num_negative 1: Test 0
@@ -465,19 +456,33 @@ class TestConvNumRandom(unittest.TestCase):
     pass
 
 
+# Function for building random test cases
+def build_test_func1(expected, test_case, func_under_test, message):
+    def test(self):
+        result = func_under_test(test_case)
+        self.assertEqual(expected, result,
+                         message.format(test_case, expected, result))
+
+    return test
+
+
 def generate_conv_num_test_cases(tests_to_generate=1000):
     for _ in range(tests_to_generate):
         num_type = random.choice(['integer', 'decimal', 'hexadecimal'])
         num = random.randint(0, 1000000)
+        is_negative = random.choice([True, False])
         if num_type == 'integer':
             num_str = str(num)
         elif num_type == 'hexadecimal':
             num_str = hex(num)
         else:
-            num = num + random.random()
+            num += random.randint(0, 9999) / 10000
             num_str = str(num)
+        if is_negative:
+            num_str = '-' + num_str
+            num *= -1
         msg = 'Test case: {}, Expected: {}, Result: {}'
-        new_test = build_test_func(num, num_str, task.conv_num, msg)
+        new_test = build_test_func1(num, num_str, task.conv_num, msg)
         setattr(TestConvNumRandom, f'test_{num_str}', new_test)
 
 
