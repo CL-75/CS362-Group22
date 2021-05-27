@@ -97,6 +97,39 @@ def format_hex_list(hex_list):
     return formatted_list
 
 
+def conv_endian(num, endian='big'):
+    """Function #3
+    Name: conv_endian
+    Purpose: Converts an integer into the equivalent hexadecimal value
+    and returns it, as a string, in the order specified, big or little
+    endian. If any other endian value is specified, it returns None.
+    Precondition: An integer value, and optional string of 'big' or 'little',
+    to control the byte order, passed as parameters. Default byte order
+    is 'big'.
+    Postcondition: A string displaying the equivalent hexadecimal value is
+    returned
+    """
+    if endian not in ['big', 'little']:
+        return None
+    else:
+        is_negative = is_num_negative(num)
+        hex_list = dec_to_base16(num)
+        hex_list = conv_to_hex_values(hex_list)
+        hex_list = pad_hex_list(hex_list)
+        hex_formatted = format_hex_list(hex_list)
+
+        if endian == 'big':
+            big_str = ' '.join([i for i in hex_formatted])
+            if is_negative:
+                big_str = '-' + big_str
+            return big_str
+        little_list = hex_formatted[::-1]
+        little_str = ' '.join([i for i in little_list])
+        if is_negative:
+            little_str = '-' + little_str
+        return little_str
+
+
 def conv_num(num_str):
     """
     Takes a string as input and converts the string into a number and

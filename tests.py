@@ -270,6 +270,196 @@ class TestFormatHexList(unittest.TestCase):
                                                          (input1)))
 
 
+# Testing for Function #3 conv_endian()
+class TestConvEndian(unittest.TestCase):
+    def test1(self):
+        # Pass in zero to make sure that the correct string value is returned
+        input1 = 0
+        expected = '00'
+        self.assertEqual(task.conv_endian(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1)))
+
+    def test2(self):
+        # Pass in value with no byte order string to make sure the correct
+        # string value is returned
+        input1 = 954786
+        expected = '0E 91 A2'
+        self.assertEqual(task.conv_endian(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1)))
+
+    def test3(self):
+        # Pass in value with explicit byte order of 'big' to make sure the
+        # correct string value is returned
+        input1 = 954786
+        input2 = 'big'
+        expected = '0E 91 A2'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test4(self):
+        # Pass in value with explicit byte order of 'little' passed, to
+        # make sure the correct string value is returned
+        input1 = 954786
+        input2 = 'little'
+        expected = 'A2 91 0E'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test5(self):
+        # Pass in negative value with explicit 'big' byte order to
+        # make sure the correct string is returned
+        input1 = -954786
+        input2 = 'big'
+        expected = '-0E 91 A2'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test6(self):
+        # Pass negative value, with 'little' byte order string, as
+        # parameters to make sure the correct string is returned
+        input1 = -954786
+        input2 = 'little'
+        expected = '-A2 91 0E'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test7(self):
+        # Pass in value with an invalid byte order string to make
+        # sure None is returned
+        input1 = 954786
+        input2 = 'small'
+        expected = None
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test8(self):
+        # Pass in value, but with another invalid byte order string,
+        # to make sure it returns None
+        input1 = 20
+        input2 = 'itty-bitty'
+        expected = None
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test9(self):
+        # Pass the largest 32-bit value to make sure that is returned
+        # correctly in little endian order
+        input1 = 2147483647
+        input2 = 'little'
+        expected = 'FF FF FF 7F'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test10(self):
+        # Pass a negative value to make sure that the resulting hex string
+        # is padded with the requisite leading zero
+        input1 = -120220722
+        input2 = 'big'
+        expected = '-07 2A 6C 32'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+
+# Function #3 Dynamic Random Testing Class
+class TestFunc3Random(unittest.TestCase):
+    pass
+
+
+# Function #3 dynamic random testing function
+def build_test_func3(expected, test_case, order, func_under_test, message):
+    def test(self):
+        result = func_under_test(test_case, order)
+        self.assertEqual(expected, result, message.format(test_case,
+                                                          expected, result))
+
+    return test
+
+
+# Helper Function for random_hex_values
+# Determines is random integer is pos or neg
+# and returns the bool value
+def is_num_neg(num1):
+    return num1 < 0
+
+
+# Helper Function for random_hex_values
+# Removes unwanted chars after hex method is
+# called on random integer value
+def remove_chars(hex_val):
+    hex_val = hex_val.replace('x', '')
+    hex_val = hex_val.replace('-', '')
+    if len(hex_val) % 2 != 0:
+        hex_val = hex_val[1:]
+
+    return hex_val
+
+
+# Helper Function for random_hex_values
+# formats hex value string to compare expected results with
+# output from conv_endian
+def format_final_str(hex_val):
+    final_str = ""
+    for n in range(len(hex_val)):
+        if n > 0 and n % 2 == 0:
+            final_str = final_str + ' '
+        final_str = final_str + hex_val[n]
+
+    return final_str
+
+
+# Generates 10000 random integers and calculates expected hex values,
+# alternating byte order with each test, to test and verify
+# the output of function #3
+def random_hex_values(tests_to_gen=10000):
+    for i in range(tests_to_gen):
+        # Alternate byte order after each test
+        if i % 2 == 0:
+            input2 = 'big'
+        else:
+            input2 = 'little'
+        rand_int = random.randint(-2147483647, 2147483647)
+        is_negative = is_num_neg(rand_int)
+        hex_val = hex(rand_int)
+        hex_val = str(hex_val)
+        hex_val = remove_chars(hex_val)
+        final_str = format_final_str(hex_val)
+        final_str = final_str.upper()
+        # reverse byte order if necessary
+        if input2 == 'little':
+            list1 = final_str.split()
+            list1 = list1[::-1]
+            final_str = ' '.join([i for i in list1])
+        # add minus sign to any negative numbers
+        if is_negative:
+            final_str = '-' + final_str
+        input1 = rand_int
+        expected = final_str
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_test_func3(expected, input1, input2, task.conv_endian,
+                                    message)
+        setattr(TestFunc3Random, 'test_{}_{}'.format(input1, input2), new_test)
+
+
 # Function #1 Testing for conv_num() function
 class TestConvNumRandom(unittest.TestCase):
     pass
@@ -839,5 +1029,6 @@ class TestMyDateTime(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    random_hex_values()
     generate_conv_num_test_cases()
     unittest.main(verbosity=2)
