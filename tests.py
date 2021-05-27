@@ -395,46 +395,54 @@ def build_test_func3(expected, test_case, order, func_under_test, message):
     return test
 
 
+# Helper Function for random_hex_values
+# Determines is random integer is pos or neg
+# and returns the bool value
+def is_num_neg(num1):
+    return num1 < 0
+
+
+# Helper Function for random_hex_values
+# Removes unwanted chars after hex method is
+# called on random integer value
+def remove_chars(hex_val):
+    hex_val = hex_val.replace('x', '')
+    hex_val = hex_val.replace('-', '')
+    if len(hex_val) % 2 != 0:
+        hex_val = hex_val[1:]
+
+    return hex_val
+
+
+# Helper Function for random_hex_values
+# formats hex value string to compare expected results with
+# output from conv_endian
+def format_final_str(hex_val):
+    final_str = ""
+    for n in range(len(hex_val)):
+        if n > 0 and n % 2 == 0:
+            final_str = final_str + ' '
+        final_str = final_str + hex_val[n]
+
+    return final_str
+
+
 # Generates 10000 random integers and calculates expected hex values,
 # alternating byte order with each test, to test and verify
 # the output of function #3
 def random_hex_values(tests_to_gen=10000):
     for i in range(tests_to_gen):
-        is_negative = False
         # Alternate byte order after each test
         if i % 2 == 0:
             input2 = 'big'
         else:
             input2 = 'little'
         rand_int = random.randint(-2147483647, 2147483647)
+        is_negative = is_num_neg(rand_int)
         hex_val = hex(rand_int)
         hex_val = str(hex_val)
-        # remove unwanted characters after hex method called
-        hex_val = hex_val.replace('x', '')
-        if rand_int > 0:
-            if len(hex_val) % 2 != 0:
-                hex_val = hex_val[1:]
-        if rand_int < 0:
-            if len(hex_val) % 2 == 0:
-                hex_val = hex_val[0] + hex_val[2:]
-        # format final string
-        final_str = ""
-        if rand_int >= 0:
-            count = 0
-            for n in hex_val:
-                if count > 0 and count % 2 == 0:
-                    final_str = final_str + ' '
-                final_str = final_str + n
-                count += 1
-        elif rand_int < 0:
-            is_negative = True
-            count = 0
-            hex_val = hex_val.replace('-', "")
-            for v in hex_val:
-                if count > 0 and count % 2 == 0:
-                    final_str = final_str + ' '
-                final_str = final_str + v
-                count += 1
+        hex_val = remove_chars(hex_val)
+        final_str = format_final_str(hex_val)
         final_str = final_str.upper()
         # reverse byte order if necessary
         if input2 == 'little':
