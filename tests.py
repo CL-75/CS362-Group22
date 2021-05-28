@@ -1,6 +1,7 @@
 import unittest
 import task
 import random
+import datetime
 
 
 # Function #3 Testing for is_num_negative() Function
@@ -750,7 +751,7 @@ class TestValidHexadecimal(unittest.TestCase):
 
 
 ##########
-# Tests for Function #3: my_datetime()
+# Tests for Function #2: my_datetime()
 ##########
 
 # Tests for get_full_date() function. Tests output.
@@ -1003,8 +1004,8 @@ class TestMyDateTime(unittest.TestCase):
         self.assertEqual(task.my_datetime(time), expected)
 
     def test_15(self):
-        time = 678749722
-        expected = '07-05-1991'
+        time = 99999999999
+        expected = '11-16-5138'
         self.assertEqual(task.my_datetime(time), expected)
 
     def test_16(self):
@@ -1031,6 +1032,22 @@ class TestMyDateTime(unittest.TestCase):
         time = 1640419200
         expected = '12-25-2021'
         self.assertEqual(task.my_datetime(time), expected)
+
+
+class RandomTestMyDateTime(unittest.TestCase):
+
+    def test_1(self):
+        tests = 500
+        for x in range(0, tests):
+            # Getting ranom int for use as input in seconds
+            sec = random.randint(0, 9999999999)
+            # https://docs.python.org/3/library/datetime.html#datetime.datetime.utcfromtimestamp
+            # Using utcfromtimestamp for universal time stamp
+            # https://www.programiz.com/python-programming/datetime/strftime
+            res = datetime.datetime.utcfromtimestamp(sec).strftime("%m-%d-%Y")
+
+            date = task.my_datetime(sec)
+            self.assertEqual(date, res)
 
 
 if __name__ == '__main__':
