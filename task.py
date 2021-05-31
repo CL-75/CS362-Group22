@@ -1,6 +1,299 @@
+# ---------------------------------------------------------------------------
+# Program: task.py
+# Class: CS 362
+# Module: Continuous Integration and Code Review
+# Assignment: Group Project: Part 2
+# Date: June 1, 2021
+# Group: 22
+# Authors: Jay Chaudhry, Casey Levy, Michael Kistler
+# ---------------------------------------------------------------------------
 import string
 
 
+# ---------------------------------------------------------------------------
+# Function #1
+# Name: conv_num
+# Author: Michael Kistler
+# ---------------------------------------------------------------------------
+def conv_num(num_str):
+    """
+    Takes a string as input and converts the string into a number and
+    returns the number. Returns None if the string is not a valid number
+    or if the input is not a string.
+    """
+    if type(num_str) != str or len(num_str) == 0:
+        return
+
+    num_type = valid_number(num_str)
+    negative_factor = 1
+    if num_str[0] == '-':
+        negative_factor = -1
+        num_str = num_str[1:]
+
+    if num_type == 'integer':
+        return convert_integral_part(num_str) * negative_factor
+
+    if num_type == 'hexadecimal':
+        return convert_integral_part(num_str[2:], base=16) * negative_factor
+
+    if num_type == 'decimal':
+        integral_str, decimal_str = num_str.split('.')
+
+        # Zero padding strings in case they are empty
+        integral = convert_integral_part('0' + integral_str)
+        decimal = convert_fractional_part(decimal_str + '0')
+
+        return (integral + decimal) * negative_factor
+
+
+def value_of_char(char):
+    """
+    Takes a single character of 0-9, A-F, or a-f and returns the
+    integer value of that character.
+    """
+    ascii_value = ord(char.lower())
+
+    # Char is a number
+    if 48 <= ascii_value <= 57:
+        return ascii_value - 48
+
+    # Char is a letter
+    return ascii_value - 87
+
+
+def convert_integral_part(num_str, base=10):
+    """
+    Takes a string representing a positive non-fractional number as input
+    and converts and returns the string as an integer.
+    """
+    return sum(
+        value_of_char(char) * base**power
+        for power, char in enumerate(reversed(num_str))
+    )
+
+
+def convert_fractional_part(num_str):
+    """
+    Takes a string representing the fractional part of a number as input and
+    converts and returns the string as a float. (e.g. '945' returns 0.945)
+    """
+    return convert_integral_part(num_str) / 10**len(num_str)
+
+
+def valid_number(num_str):
+    """
+    Takes a string as input and returns 'integer' if the string is a valid
+    integer, 'decimal' if the string is a valid decimal number, or
+    'hexadecimal' if the string is a valid hexadecimal number.
+    Returns False otherwise.
+    """
+    if valid_integer(num_str):
+        return 'integer'
+
+    if valid_decimal(num_str):
+        return 'decimal'
+
+    if valid_hexadecimal(num_str):
+        return 'hexadecimal'
+
+    return False
+
+
+def strip_negative_sign(num_str):
+    """
+    Takes a string as input and strips the the first character off
+    off the string if it is a negative sign. Leaves the string
+    unchanged otherwise.
+    """
+    if num_str[0] == '-':
+        num_str = num_str[1:]
+
+    return num_str
+
+
+def valid_integer(num_str):
+    """
+    Takes a string as input and returns True if the string represents a valid
+    integer. Returns False otherwise.
+    """
+    if len(num_str) == 0:
+        return False
+
+    num_str = strip_negative_sign(num_str)
+    return all(char in string.digits for char in num_str)
+
+
+def valid_decimal(num_str):
+    """
+    Takes a string as input and returns True if the string represents a valid
+    decimal number. Returns False otherwise.
+    """
+    if len(num_str) == 0:
+        return False
+
+    num_str = strip_negative_sign(num_str)
+    try:
+        integral, decimal = num_str.split('.')
+
+        if len(integral) == 0:
+            return valid_integer(decimal)
+
+        if len(decimal) == 0:
+            return valid_integer(integral)
+
+        return valid_integer(integral) and valid_integer(decimal)
+
+    # Value error is raised if num_str doesn't have exactly one decimal point
+    except ValueError:
+        return False
+
+
+def valid_hexadecimal(num_str):
+    """
+    Takes a string as input and returns True if the string represents a valid
+    hexadecimal number. Returns False otherwise.
+    """
+    if len(num_str) == 0:
+        return False
+
+    num_str = strip_negative_sign(num_str)
+    if not num_str.lower().startswith('0x'):
+        return False
+
+    return all(char in string.hexdigits for char in num_str[2:])
+
+
+# ---------------------------------------------------------------------------
+# Function #2
+# Name: my_datetime
+# Author: Casey Levy
+# ---------------------------------------------------------------------------
+def get_full_date(month, day, yr):
+    """
+    For output use.
+    Input: A month, day, and year in integer form
+
+    Output: Converts the input into
+    the proper string for output.
+    """
+    temp_date = str(month) + "-"
+
+    # Adding a 0 if the month number is less than 10, i.e. May would be 05
+    if month < 10:
+        temp_date = "0" + temp_date
+
+    # Adding a 0 if the day number is less than 10, i.e. the 5th would be 05
+    if day < 10:
+        temp_date += "0"
+
+    temp_date = temp_date + str(day) + "-" + str(yr)
+
+    return temp_date
+
+
+# Getting number of days from seconds in a day
+def get_days(num_sec):
+    """
+    Input: Number of seconds
+
+    Output: Number of days based off input
+    """
+    # Seconds in a day
+    seconds = 86400
+    days = 0
+
+    while num_sec >= seconds:
+        num_sec -= seconds
+        days += 1
+
+    return days
+
+
+# Getting 400 year sequences for easier computation
+# 400 was the easiest sequence to use, tried 300, 500, etc.
+def get_sequence(days):
+    # https://en.wikipedia.org/wiki/Solar_cycle_(calendar)
+    years = 0
+    days_in_years = 146097
+
+    while days >= days_in_years:
+        days -= days_in_years
+
+        years += 400
+
+    return years, days
+
+
+# Getting specific date from epoch date based on input of years and days
+# https://www.epochconverter.com/
+def get_date_from_epoch(years, days):
+    """
+    Input: A number of years and number of days
+
+    Output: The specific date from the epoch (1/1/1970)
+    based on input years and days.
+    (i.e. an input of 10 years, 50 days will return the specific date
+    of 10 years and 50 days from 1/1/1970)
+    """
+    cur_day = 1
+    cur_month = 1
+    # Epoch year + years
+    cur_year = 1970 + years
+
+    # Making lists for days in each month for leap years and regular years
+    leapyear_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    while days:
+        cal = month_days
+# https://en.wikipedia.org/wiki/Leap_year
+# If a year is exactly divisible by 4, it is a leap year
+# It is also a leap year if it exactly divisible by exactly 100 and 400 as well
+        if cur_year % 4 == 0:
+            cal = leapyear_days
+
+        elif cur_year % 400 == 0:
+            cal = month_days
+
+        elif cur_year % 100 == 0:
+            cal = leapyear_days
+
+        if cur_day == cal[cur_month-1]:
+            cur_month += 1
+            # Signals end of the year
+            if cur_month == 13:
+                cur_month = 1
+                cur_year += 1
+
+            cur_day = 0
+
+        cur_day += 1
+
+        days -= 1
+
+    return cur_month, cur_day, cur_year
+
+
+# Main function. Getting a specific date from epoch based on input of seconds
+def my_datetime(num_sec):
+    """
+    Input: Number of seconds starting from epoch date, 01-01-1970
+
+    Output: Specific date
+    """
+    days = get_days(num_sec)
+    years, days = get_sequence(days)
+    month, day, yr = get_date_from_epoch(years, days)
+    date = get_full_date(month, day, yr)
+
+    return date
+
+
+# ---------------------------------------------------------------------------
+# Function #3
+# Name: conv_endian
+# Author: Jay Chaudhry
+# ---------------------------------------------------------------------------
 def is_num_negative(num):
     """ Function #3 Helper Function
     Name: is_num_negative
@@ -128,276 +421,3 @@ def conv_endian(num, endian='big'):
         if is_negative:
             little_str = '-' + little_str
         return little_str
-
-
-def conv_num(num_str):
-    """
-    Takes a string as input and converts the string into a number and
-    returns the number. Returns None if the string is not a valid number
-    or if the input is not a string.
-    """
-    if type(num_str) != str or len(num_str) == 0:
-        return
-
-    num_type = valid_number(num_str)
-    negative_factor = 1
-    if num_str[0] == '-':
-        negative_factor = -1
-        num_str = num_str[1:]
-
-    if num_type == 'integer':
-        return convert_integral_part(num_str) * negative_factor
-
-    if num_type == 'hexadecimal':
-        return convert_integral_part(num_str[2:], base=16) * negative_factor
-
-    if num_type == 'decimal':
-        integral_str, decimal_str = num_str.split('.')
-
-        # Zero padding strings in case they are empty
-        integral = convert_integral_part('0' + integral_str)
-        decimal = convert_fractional_part(decimal_str + '0')
-
-        return (integral + decimal) * negative_factor
-
-
-def value_of_char(char):
-    """
-    Takes a single character of 0-9, A-F, or a-f and returns the
-    integer value of that character.
-    """
-    ascii_value = ord(char.lower())
-
-    # Char is a number
-    if ascii_value >= 48 and ascii_value <= 57:
-        return ascii_value - 48
-
-    # Char is a letter
-    return ascii_value - 87
-
-
-def convert_integral_part(num_str, base=10):
-    """
-    Takes a string representing a positive non-fractional number as input
-    and converts and returns the string as an integer.
-    """
-    return sum(
-        value_of_char(char) * base**power
-        for power, char in enumerate(reversed(num_str))
-    )
-
-
-def convert_fractional_part(num_str):
-    """
-    Takes a string representing the fractional part of a number as input and
-    converts and returns the string as a float. (e.g. '945' returns 0.945)
-    """
-    return convert_integral_part(num_str) / 10**len(num_str)
-
-
-def valid_number(num_str):
-    """
-    Takes a string as input and returns 'integer' if the string is a valid
-    integer, 'decimal' if the string is a valid decimal number, or
-    'hexadecimal' if the string is a valid hexadecimal number.
-    Returns False otherwise.
-    """
-    if valid_integer(num_str):
-        return 'integer'
-
-    if valid_decimal(num_str):
-        return 'decimal'
-
-    if valid_hexadecimal(num_str):
-        return 'hexadecimal'
-
-    return False
-
-
-def strip_negative_sign(num_str):
-    """
-    Takes a string as input and strips the the first character off
-    off the string if it is a negative sign. Leaves the string
-    unchanged otherwise.
-    """
-    if num_str[0] == '-':
-        num_str = num_str[1:]
-
-    return num_str
-
-
-def valid_integer(num_str):
-    """
-    Takes a string as input and returns True if the string represents a valid
-    integer. Returns False otherwise.
-    """
-    if len(num_str) == 0:
-        return False
-
-    num_str = strip_negative_sign(num_str)
-    return all(char in string.digits for char in num_str)
-
-
-def valid_decimal(num_str):
-    """
-    Takes a string as input and returns True if the string represents a valid
-    decimal number. Returns False otherwise.
-    """
-    if len(num_str) == 0:
-        return False
-
-    num_str = strip_negative_sign(num_str)
-    try:
-        integral, decimal = num_str.split('.')
-
-        if len(integral) == 0:
-            return valid_integer(decimal)
-
-        if len(decimal) == 0:
-            return valid_integer(integral)
-
-        return valid_integer(integral) and valid_integer(decimal)
-
-    # Value error is raised if num_str doesn't have exactly one decimal point
-    except ValueError:
-        return False
-
-
-def valid_hexadecimal(num_str):
-    """
-    Takes a string as input and returns True if the string represents a valid
-    hexadecimal number. Returns False otherwise.
-    """
-    if len(num_str) == 0:
-        return False
-
-    num_str = strip_negative_sign(num_str)
-    if not num_str.lower().startswith('0x'):
-        return False
-
-    return all(char in string.hexdigits for char in num_str[2:])
-
-
-##########
-# Helper functions for my_datetime() function
-##########
-
-def get_full_date(month, day, yr):
-    """
-    For output use.
-    Input: A month, day, and year in integer form
-
-    Output: Converts the input into
-    the proper string for output.
-    """
-    temp_date = str(month) + "-"
-
-    # Adding a 0 if the month number is less than 10, i.e. May would be 05
-    if month < 10:
-        temp_date = "0" + temp_date
-
-    # Adding a 0 if the day number is less than 10, i.e. the 5th would be 05
-    if day < 10:
-        temp_date += "0"
-
-    temp_date = temp_date + str(day) + "-" + str(yr)
-
-    return temp_date
-
-
-# Getting number of days from seconds in a day
-def get_days(num_sec):
-    """
-    Input: Number of seconds
-
-    Output: Number of days based off input
-    """
-    # Seconds in a day
-    seconds = 86400
-    days = 0
-
-    while num_sec >= seconds:
-        num_sec -= seconds
-        days += 1
-
-    return days
-
-
-# Getting 400 year sequences for easier computation
-# 400 was the easiest sequence to use, tried 300, 500, etc.
-def get_sequence(days):
-    # https://en.wikipedia.org/wiki/Solar_cycle_(calendar)
-    years = 0
-    days_in_years = 146097
-
-    while days >= days_in_years:
-        days -= days_in_years
-
-        years += 400
-
-    return years, days
-
-
-# Getting specific date from epoch date based on input of years and days
-# https://www.epochconverter.com/
-def get_date_from_epoch(years, days):
-    """
-    Input: A number of years and number of days
-
-    Output: The specific date from the epoch (1/1/1970)
-    based on input years and days.
-    (i.e. an input of 10 years, 50 days will return the specific date
-    of 10 years and 50 days from 1/1/1970)
-    """
-    cur_day = 1
-    cur_month = 1
-    # Epoch year + years
-    cur_year = 1970 + years
-
-    # Making lists for days in each month for leap years and regular years
-    leapyear_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-    while days:
-        cal = month_days
-# https://en.wikipedia.org/wiki/Leap_year
-# If a year is exactly divisible by 4, it is a leap year
-# It is also a leap year if it exactly divisible by exactly 100 and 400 as well
-        if cur_year % 4 == 0:
-            cal = leapyear_days
-
-        elif cur_year % 400 == 0:
-            cal = month_days
-
-        elif cur_year % 100 == 0:
-            cal = leapyear_days
-
-        if cur_day == cal[cur_month-1]:
-            cur_month += 1
-            # Signals end of the year
-            if cur_month == 13:
-                cur_month = 1
-                cur_year += 1
-
-            cur_day = 0
-
-        cur_day += 1
-
-        days -= 1
-
-    return cur_month, cur_day, cur_year
-
-
-# Main function. Getting a specific date from epoch based on input of seconds
-def my_datetime(num_sec):
-    """
-    Input: Number of seconds starting from epoch date, 01-01-1970
-
-    Output: Specific date
-    """
-    days = get_days(num_sec)
-    years, days = get_sequence(days)
-    month, day, yr = get_date_from_epoch(years, days)
-    date = get_full_date(month, day, yr)
-
-    return date
