@@ -1072,7 +1072,7 @@ def build_test_func2(expected, test_case, func_under_test, message):
         self.assertEqual(expected, result,
                          message.format(test_case, expected, result))
 
-        return test
+    return test
 
 
 def generate_my_datetime_tests(tests=500):
