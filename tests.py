@@ -5,7 +5,7 @@
 # Assignment: Group Project: Part 2
 # Date: June 1, 2021
 # Group: 22
-# Authors: Jay Chaudhry, Casey Levy, Michael Kistler
+# Authors: Jay Chaudhry, Michael Kistler, Casey Levy
 # ---------------------------------------------------------------------------
 import unittest
 import task
@@ -1000,11 +1000,19 @@ def is_num_neg(num1):
 
 
 # Helper Function for random_hex_values
-# Removes unwanted chars after hex method is
-# called on random integer value
-def remove_chars(hex_val):
+# Removes unwanted negative char if original
+# value is negative
+def remove_neg_char(hex_val):
     if hex_val[0] == '-':
         hex_val = hex_val.replace('-', '')
+
+    return hex_val
+
+
+# Helper Function pads an odd length string
+# with a leading zero to ensure that byte
+# pairs are formatted correctly
+def pad_hex_string(hex_val):
     if len(hex_val) % 2 != 0:
         hex_val = '0' + hex_val
 
@@ -1047,7 +1055,8 @@ def random_hex_values(tests_to_gen=10000):
         is_negative = is_num_neg(rand_int)
         hex_val = format(rand_int, 'X')
         hex_val = str(hex_val)
-        hex_val = remove_chars(hex_val)
+        hex_val = remove_neg_char(hex_val)
+        hex_val = pad_hex_string(hex_val)
         final_str = format_final_str(hex_val)
         # reverse byte order if necessary
         if input2 == 'little':
