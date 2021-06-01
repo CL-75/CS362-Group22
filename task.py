@@ -249,14 +249,11 @@ def get_date_from_epoch(years, days):
 # https://en.wikipedia.org/wiki/Leap_year
 # If a year is exactly divisible by 4, it is a leap year
 # It is also a leap year if it exactly divisible by exactly 100 and 400 as well
-        if cur_year % 4 == 0:
+        if cur_year % 4 == 0 and (cur_year % 100 != 0 or cur_year % 400 == 0):
             cal = leapyear_days
 
-        elif cur_year % 400 == 0:
+        else:
             cal = month_days
-
-        elif cur_year % 100 == 0:
-            cal = leapyear_days
 
         if cur_day == cal[cur_month-1]:
             cur_month += 1

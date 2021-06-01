@@ -10,6 +10,7 @@
 import unittest
 import task
 import random
+import datetime
 
 
 # ---------------------------------------------------------------------------
@@ -1060,7 +1061,36 @@ def random_hex_values(tests_to_gen=10000):
         setattr(TestFunc3Random, 'test_{}_{}'.format(input1, input2), new_test)
 
 
+# Function #2 Dynamic Random Testing
+class RandomTestMyDateTime(unittest.TestCase):
+    pass
+
+
+def build_test_func2(expected, test_case, func_under_test, message):
+    def test(self):
+        result = func_under_test(test_case)
+        self.assertEqual(expected, result,
+                         message.format(test_case, expected, result))
+
+    return test
+
+
+def generate_my_datetime_tests(tests=500):
+    for _ in range(tests):
+        # Getting ranom int for use as input in seconds
+        sec = random.randint(0, 9999999999)
+        # https://docs.python.org/3/library/datetime.html#datetime.datetime.utcfromtimestamp
+        # Using utcfromtimestamp for universal time stamp
+        # https://www.programiz.com/python-programming/datetime/strftime
+        res = datetime.datetime.utcfromtimestamp(sec).strftime("%m-%d-%Y")
+        message = 'Test Case: {}, Expected: {}, Result: {}'
+        new_test = build_test_func2(res, sec,
+                                    task.my_datetime, message)
+        setattr(RandomTestMyDateTime, 'test_{}'.format(sec), new_test)
+
+
 if __name__ == '__main__':
     random_hex_values()
+    generate_my_datetime_tests()
     generate_conv_num_test_cases()
     unittest.main(verbosity=2)
