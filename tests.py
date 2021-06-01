@@ -716,11 +716,6 @@ class TestConvDecToHexValues(unittest.TestCase):
                                                          conv_to_hex_values
                                                          (input1)))
 
-<<<<<<< HEAD
-##########
-# Tests for Function #2: my_datetime()
-##########
-=======
     # Test Function #3 conv_to_hex_values 2: Pass a list of values 1-9
     # to make sure that each value is converted correctly
     def test2(self):
@@ -731,7 +726,6 @@ class TestConvDecToHexValues(unittest.TestCase):
                                                          task.
                                                          conv_to_hex_values
                                                          (input1)))
->>>>>>> 7753e6a9692241a3393fc16694ecf9fc285f2dc4
 
     # Test Function #3 conv_to_hex_values 2: Pass a list of the highest
     # base 16 digit values, in reverse order, to make sure that  each
@@ -1016,14 +1010,7 @@ def pad_hex_string(hex_val):
     if len(hex_val) % 2 != 0:
         hex_val = '0' + hex_val
 
-<<<<<<< HEAD
-    def test_15(self):
-        time = 99999999999
-        expected = '11-16-5138'
-        self.assertEqual(task.my_datetime(time), expected)
-=======
     return hex_val
->>>>>>> 7753e6a9692241a3393fc16694ecf9fc285f2dc4
 
 
 # Helper Function for random_hex_values
@@ -1073,31 +1060,33 @@ def random_hex_values(tests_to_gen=10000):
                                     message)
         setattr(TestFunc3Random, 'test_{}_{}'.format(input1, input2), new_test)
 
-
+# Function #2 Dynamic Random Testing
 class RandomTestMyDateTime(unittest.TestCase):
     pass
 
-    def build_test_func_2(expected, test_case, func_under_test, message):
-        def test(self):
-            result = func_under_test(test_case)
-            self.assertEqual(expected, result, 
-                             message.format(test_case, expected, result))
+
+def build_test_func2(expected, test_case, func_under_test, message):
+    def test(self):
+        result = func_under_test(test_case)
+        self.assertEqual(expected, result,
+                         message.format(test_case, expected, result))
 
         return test
 
-    def generate_my_datetime_tests(tests=500):
-        for x in range(0, tests):
-            # Getting ranom int for use as input in seconds
-            sec = random.randint(0, 9999999999)
-            # https://docs.python.org/3/library/datetime.html#datetime.datetime.utcfromtimestamp
-            # Using utcfromtimestamp for universal time stamp
-            # https://www.programiz.com/python-programming/datetime/strftime
-            res = datetime.datetime.utcfromtimestamp(sec).strftime("%m-%d-%Y")
-            expected = res
-            message = 'Test Case: {}, Expected: {}, Result: {}'
-            new_test = build_test_func_2(expected, sec, task.my_datetime,
-                                         message)
-            setattr(RandomTestMyDateTime, 'test_{}'.format(sec), new_test)
+
+def generate_my_datetime_tests(tests=500):
+    for _ in range(tests):
+        # Getting ranom int for use as input in seconds
+        sec = random.randint(0, 9999999999)
+        # https://docs.python.org/3/library/datetime.html#datetime.datetime.utcfromtimestamp
+        # Using utcfromtimestamp for universal time stamp
+        # https://www.programiz.com/python-programming/datetime/strftime
+        res = datetime.datetime.utcfromtimestamp(sec).strftime("%m-%d-%Y")
+        message = 'Test Case: {}, Expected: {}, Result: {}'
+        new_test = build_test_func2(res, sec,
+                                    task.my_datetime, message)
+        setattr(RandomTestMyDateTime, 'test_{}'.format(sec), new_test)
+
 
 if __name__ == '__main__':
     random_hex_values()
