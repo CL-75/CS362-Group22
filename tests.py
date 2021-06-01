@@ -1,458 +1,23 @@
+# ---------------------------------------------------------------------------
+# Program: tests.py
+# Class: CS 362
+# Module: Continuous Integration and Code Review
+# Assignment: Group Project: Part 2
+# Date: June 1, 2021
+# Group: 22
+# Authors: Jay Chaudhry, Casey Levy, Michael Kistler
+# ---------------------------------------------------------------------------
 import unittest
 import task
 import random
 import datetime
 
 
-# Function #3 Testing for is_num_negative() Function
-class TestIsNumNegative(unittest.TestCase):
-    # Test Function #3 is_num_negative 1: Test 0
-    def test1(self):
-        input1 = 0
-        self.assertFalse(task.is_num_negative(input1))
-
-    # Test Function #3 is_num_negative 2: Test -1
-    def test2(self):
-        input1 = -1
-        self.assertTrue(task.is_num_negative(input1))
-
-    # Test Function #3 is_num_negative 3: Test 1
-    def test3(self):
-        input1 = 1
-        self.assertFalse(task.is_num_negative(input1))
-
-    # Test Function #3 is_num_negative 4: Test smallest 32-bit negative int
-    def test4(self):
-        input1 = -2147483648
-        self.assertTrue(task.is_num_negative(input1))
-
-    # Test Function #3 is_num_negative 5: Test largest 32-bit positive int
-    def test5(self):
-        input1 = 2147483647
-        self.assertFalse(task.is_num_negative(input1))
-
-
-# Function #3 Testing for dec_to_base16() Function
-class TestDecToBase16(unittest.TestCase):
-    # Test Function #3 dec_to_binary 1: Pass zero to make sure it is
-    # handled correctly
-    def test1(self):
-        input1 = 0
-        expected = [0]
-        self.assertEqual(task.dec_to_base16(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.dec_to_base16
-                                                         (input1)))
-
-    # Test Function #3 dec_to_base16 2: Pass the largest hex digit value
-    # to see that it is stored correctly
-    def test2(self):
-        input1 = 15
-        expected = [15]
-        self.assertEqual(task.dec_to_base16(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.dec_to_base16
-                                                         (input1)))
-
-    # Test Function #3 dec_to_base16 3: Pass an int value one larger than
-    # the largest hex digit to see that it is stored correctly
-    def test3(self):
-        input1 = 16
-        expected = [1, 0]
-        self.assertEqual(task.dec_to_base16(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.dec_to_base16
-                                                         (input1)))
-
-    # Test Function #3 dec_to_base16 4: Pass a value one greater than the
-    # 16s column to make sure that it is handled correctly
-    def test4(self):
-        input1 = 256
-        expected = [1, 0, 0]
-        self.assertEqual(task.dec_to_base16(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.dec_to_base16
-                                                         (input1)))
-
-    # Test Function # dec_to_base16 5: Pass lecture example integer
-    def test5(self):
-        input1 = 954786
-        expected = [14, 9, 1, 10, 2]
-        self.assertEqual(task.dec_to_base16(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.dec_to_base16
-                                                         (input1)))
-
-    # Test Function #3 dec_to_base16 6: Pass largest 32-bit int to make
-    # sure it is handled correctly
-    def test6(self):
-        input1 = 2147483647
-        expected = [7, 15, 15, 15, 15, 15, 15, 15]
-        self.assertEqual(task.dec_to_base16(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.dec_to_base16
-                                                         (input1)))
-
-    # Test Function #3 dec_to_base16 7: Pass the smallest 32-bit int,
-    # plus one, to make sure it is treated correctly
-    def test7(self):
-        input1 = -2147483647
-        expected = [7, 15, 15, 15, 15, 15, 15, 15]
-        self.assertEqual(task.dec_to_base16(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.dec_to_base16
-                                                         (input1)))
-
-
-# Function #3 Testing for conv_to_hex_values() Function
-class TestConvDecToHexValues(unittest.TestCase):
-    # Test Function #3 conv_to_hex_values 1: Pass a list of zeros to
-    # make sure that each value is formatted correctly
-    def test1(self):
-        input1 = [0, 0, 0, 0, 0]
-        expected = ['0', '0', '0', '0', '0']
-        self.assertEqual(task.conv_to_hex_values(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.
-                                                         conv_to_hex_values
-                                                         (input1)))
-
-    # Test Function #3 conv_to_hex_values 2: Pass a list of values 1-9
-    # to make sure that each value is converted correctly
-    def test2(self):
-        input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        expected = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-        self.assertEqual(task.conv_to_hex_values(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.
-                                                         conv_to_hex_values
-                                                         (input1)))
-
-    # Test Function #3 conv_to_hex_values 2: Pass a list of the highest
-    # base 16 digit values, in reverse order, to make sure that  each
-    # value is converted correctly
-    def test3(self):
-        input1 = [15, 14, 13, 12, 11, 10]
-        expected = ['F', 'E', 'D', 'C', 'B', 'A']
-        self.assertEqual(task.conv_to_hex_values(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.
-                                                         conv_to_hex_values
-                                                         (input1)))
-
-    # Test Function #3 conv_to_hex_values 3: Pass a list of
-    # equivalent hex values, that represent the largest possible
-    # 32-bit integer, to make sure that each value is converted correctly
-    def test4(self):
-        input1 = [7, 15, 15, 15, 15, 15, 15, 15]
-        expected = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
-        self.assertEqual(task.conv_to_hex_values(input1), expected,
-                         msg='Expected {} got {}'.format(expected,
-                                                         task.
-                                                         conv_to_hex_values
-                                                         (input1)))
-
-    # Test Function #3 conv_to_hex_values: Pass a list of hex values,
-    # corresponding to the lecture example, to make sure that each value
-    # is converted correctly
-    def test5(self):
-        input1 = [14, 9, 1, 10, 2]
-        expected = ['E', '9', '1', 'A', '2']
-        self.assertEqual(task.conv_to_hex_values(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_to_hex_values
-                                                         (input1)))
-
-
-# Function #3 testing for pad_hex_list()
-class TestPadHexList(unittest.TestCase):
-    # Pass a list with one value to make sure the list is padded correctly
-    def test1(self):
-        input1 = ['0']
-        expected = ['0', '0']
-        self.assertEqual(task.pad_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         pad_hex_list
-                                                         (input1)))
-
-    def test2(self):
-        # Pass a list with an even number of values to make sure the list
-        # is left untouched
-        input1 = ['0', '0']
-        expected = ['0', '0']
-        self.assertEqual(task.pad_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         pad_hex_list
-                                                         (input1)))
-
-    def test3(self):
-        # Pass a list of hex string values equivalent to the largest
-        # 32-bit int to make sure it is handled correctly
-        input1 = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
-        expected = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
-        self.assertEqual(task.pad_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         pad_hex_list
-                                                         (input1)))
-
-    def test4(self):
-        # Pass a list of values corresponding to the lecture example to
-        # make sure it is padded correctly
-        input1 = ['E', '9', '1', 'A', '2']
-        expected = ['0', 'E', '9', '1', 'A', '2']
-        self.assertEqual(task.pad_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         pad_hex_list
-                                                         (input1)))
-
-
-# Function #3 Testing for format_hex_list()
-class TestFormatHexList(unittest.TestCase):
-    # Pass a list containing two hex digit string values to make sure
-    # that they are formatted correctly into one byte value
-    def test1(self):
-        input1 = ['0', '0']
-        expected = ['00']
-        self.assertEqual(task.format_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         format_hex_list
-                                                         (input1)))
-
-    # Pass a list containing four hex digit string values to make sure
-    # that they are formatted correctly into two byte values
-    def test2(self):
-        input1 = ['2', '3', '7', '8']
-        expected = ['23', '78']
-        self.assertEqual(task.format_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         format_hex_list
-                                                         (input1)))
-
-    # Pass a list containing hex digit, string values, equivalent to the
-    # largest 32-bit pos integer, to make sure that they are formatted
-    # correctly
-    def test3(self):
-        input1 = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
-        expected = ['7F', 'FF', 'FF', 'FF']
-        self.assertEqual(task.format_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         format_hex_list
-                                                         (input1)))
-
-    # Pass a list containing hex digit, string values, equivalent to the
-    # big endian lecture example, to make sure that they are formatted
-    # correctly
-    def test4(self):
-        input1 = ['0', 'E', '9', '1', 'A', '2']
-        expected = ['0E', '91', 'A2']
-        self.assertEqual(task.format_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         format_hex_list
-                                                         (input1)))
-
-    # Pass a list containing hex digit, string values, equivalent to the
-    # little endian lecture example, to make sure that they are formatted
-    # correctly
-    def test5(self):
-        input1 = ['A', '2', '9', '1', '0', 'E']
-        expected = ['A2', '91', '0E']
-        self.assertEqual(task.format_hex_list(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         format_hex_list
-                                                         (input1)))
-
-
-# Testing for Function #3 conv_endian()
-class TestConvEndian(unittest.TestCase):
-    def test1(self):
-        # Pass in zero to make sure that the correct string value is returned
-        input1 = 0
-        expected = '00'
-        self.assertEqual(task.conv_endian(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1)))
-
-    def test2(self):
-        # Pass in value with no byte order string to make sure the correct
-        # string value is returned
-        input1 = 954786
-        expected = '0E 91 A2'
-        self.assertEqual(task.conv_endian(input1), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1)))
-
-    def test3(self):
-        # Pass in value with explicit byte order of 'big' to make sure the
-        # correct string value is returned
-        input1 = 954786
-        input2 = 'big'
-        expected = '0E 91 A2'
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-    def test4(self):
-        # Pass in value with explicit byte order of 'little' passed, to
-        # make sure the correct string value is returned
-        input1 = 954786
-        input2 = 'little'
-        expected = 'A2 91 0E'
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-    def test5(self):
-        # Pass in negative value with explicit 'big' byte order to
-        # make sure the correct string is returned
-        input1 = -954786
-        input2 = 'big'
-        expected = '-0E 91 A2'
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-    def test6(self):
-        # Pass negative value, with 'little' byte order string, as
-        # parameters to make sure the correct string is returned
-        input1 = -954786
-        input2 = 'little'
-        expected = '-A2 91 0E'
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-    def test7(self):
-        # Pass in value with an invalid byte order string to make
-        # sure None is returned
-        input1 = 954786
-        input2 = 'small'
-        expected = None
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-    def test8(self):
-        # Pass in value, but with another invalid byte order string,
-        # to make sure it returns None
-        input1 = 20
-        input2 = 'itty-bitty'
-        expected = None
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-    def test9(self):
-        # Pass the largest 32-bit value to make sure that is returned
-        # correctly in little endian order
-        input1 = 2147483647
-        input2 = 'little'
-        expected = 'FF FF FF 7F'
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-    def test10(self):
-        # Pass a negative value to make sure that the resulting hex string
-        # is padded with the requisite leading zero
-        input1 = -120220722
-        input2 = 'big'
-        expected = '-07 2A 6C 32'
-        self.assertEqual(task.conv_endian(input1, input2), expected,
-                         msg='Expected {} got {}'.format(expected, task.
-                                                         conv_endian
-                                                         (input1, input2)))
-
-
-# Function #3 Dynamic Random Testing Class
-class TestFunc3Random(unittest.TestCase):
-    pass
-
-
-# Function #3 dynamic random testing function
-def build_test_func3(expected, test_case, order, func_under_test, message):
-    def test(self):
-        result = func_under_test(test_case, order)
-        self.assertEqual(expected, result, message.format(test_case,
-                                                          expected, result))
-
-    return test
-
-
-# Helper Function for random_hex_values
-# Determines is random integer is pos or neg
-# and returns the bool value
-def is_num_neg(num1):
-    return num1 < 0
-
-
-# Helper Function for random_hex_values
-# Removes unwanted chars after hex method is
-# called on random integer value
-def remove_chars(hex_val):
-    hex_val = hex_val.replace('x', '')
-    hex_val = hex_val.replace('-', '')
-    if len(hex_val) % 2 != 0:
-        hex_val = hex_val[1:]
-
-    return hex_val
-
-
-# Helper Function for random_hex_values
-# formats hex value string to compare expected results with
-# output from conv_endian
-def format_final_str(hex_val):
-    final_str = ""
-    for n in range(len(hex_val)):
-        if n > 0 and n % 2 == 0:
-            final_str = final_str + ' '
-        final_str = final_str + hex_val[n]
-
-    return final_str
-
-
-# Generates 10000 random integers and calculates expected hex values,
-# alternating byte order with each test, to test and verify
-# the output of function #3
-def random_hex_values(tests_to_gen=10000):
-    for i in range(tests_to_gen):
-        # Alternate byte order after each test
-        if i % 2 == 0:
-            input2 = 'big'
-        else:
-            input2 = 'little'
-        rand_int = random.randint(-2147483647, 2147483647)
-        is_negative = is_num_neg(rand_int)
-        hex_val = hex(rand_int)
-        hex_val = str(hex_val)
-        hex_val = remove_chars(hex_val)
-        final_str = format_final_str(hex_val)
-        final_str = final_str.upper()
-        # reverse byte order if necessary
-        if input2 == 'little':
-            list1 = final_str.split()
-            list1 = list1[::-1]
-            final_str = ' '.join([i for i in list1])
-        # add minus sign to any negative numbers
-        if is_negative:
-            final_str = '-' + final_str
-        input1 = rand_int
-        expected = final_str
-        message = 'Test case: {}, Expected: {}, Result: {}'
-        new_test = build_test_func3(expected, input1, input2, task.conv_endian,
-                                    message)
-        setattr(TestFunc3Random, 'test_{}_{}'.format(input1, input2), new_test)
-
-
-# Function #1 Testing for conv_num() function
+# ---------------------------------------------------------------------------
+# Function #1 Testing for conv_num()
+# Author: Michael Kistler
+# ---------------------------------------------------------------------------
+# Function #1 Random Testing for conv_num()
 class TestConvNumRandom(unittest.TestCase):
     pass
 
@@ -750,10 +315,10 @@ class TestValidHexadecimal(unittest.TestCase):
         self.assertEqual(task.valid_hexadecimal(num), True)
 
 
-##########
-# Tests for Function #2: my_datetime()
-##########
-
+# ---------------------------------------------------------------------------
+# Function #2 Testing for my_datetime()
+# Author: Casey Levy
+# ---------------------------------------------------------------------------
 # Tests for get_full_date() function. Tests output.
 class TestGetFullDate(unittest.TestCase):
 
@@ -1004,8 +569,8 @@ class TestMyDateTime(unittest.TestCase):
         self.assertEqual(task.my_datetime(time), expected)
 
     def test_15(self):
-        time = 99999999999
-        expected = '11-16-5138'
+        time = 678749722
+        expected = '07-05-1991'
         self.assertEqual(task.my_datetime(time), expected)
 
     def test_16(self):
@@ -1034,10 +599,484 @@ class TestMyDateTime(unittest.TestCase):
         self.assertEqual(task.my_datetime(time), expected)
 
 
-class RandomTestMyDateTime(unittest.TestCase):
+# ---------------------------------------------------------------------------
+# Function #3 Testing for conv_endian()
+# Author: Jay Chaudhry
+# ---------------------------------------------------------------------------
+# Function #3 Testing for is_num_negative() Function
+class TestIsNumNegative(unittest.TestCase):
+    # Test Function #3 is_num_negative 1: Test 0
+    def test1(self):
+        input1 = 0
+        self.assertFalse(task.is_num_negative(input1))
 
-    def test_1(self):
-        tests = 500
+    # Test Function #3 is_num_negative 2: Test -1
+    def test2(self):
+        input1 = -1
+        self.assertTrue(task.is_num_negative(input1))
+
+    # Test Function #3 is_num_negative 3: Test 1
+    def test3(self):
+        input1 = 1
+        self.assertFalse(task.is_num_negative(input1))
+
+    # Test Function #3 is_num_negative 4: Test smallest 32-bit negative int
+    def test4(self):
+        input1 = -2147483648
+        self.assertTrue(task.is_num_negative(input1))
+
+    # Test Function #3 is_num_negative 5: Test largest 32-bit positive int
+    def test5(self):
+        input1 = 2147483647
+        self.assertFalse(task.is_num_negative(input1))
+
+
+# Function #3 Testing for dec_to_base16() Function
+class TestDecToBase16(unittest.TestCase):
+    # Test Function #3 dec_to_binary 1: Pass zero to make sure it is
+    # handled correctly
+    def test1(self):
+        input1 = 0
+        expected = [0]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 2: Pass the largest hex digit value
+    # to see that it is stored correctly
+    def test2(self):
+        input1 = 15
+        expected = [15]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 3: Pass an int value one larger than
+    # the largest hex digit to see that it is stored correctly
+    def test3(self):
+        input1 = 16
+        expected = [1, 0]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 4: Pass a value one greater than the
+    # 16s column to make sure that it is handled correctly
+    def test4(self):
+        input1 = 256
+        expected = [1, 0, 0]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function # dec_to_base16 5: Pass lecture example integer
+    def test5(self):
+        input1 = 954786
+        expected = [14, 9, 1, 10, 2]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 6: Pass largest 32-bit int to make
+    # sure it is handled correctly
+    def test6(self):
+        input1 = 2147483647
+        expected = [7, 15, 15, 15, 15, 15, 15, 15]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+    # Test Function #3 dec_to_base16 7: Pass the smallest 32-bit int,
+    # plus one, to make sure it is treated correctly
+    def test7(self):
+        input1 = -2147483647
+        expected = [7, 15, 15, 15, 15, 15, 15, 15]
+        self.assertEqual(task.dec_to_base16(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.dec_to_base16
+                                                         (input1)))
+
+
+# Function #3 Testing for conv_to_hex_values() Function
+class TestConvDecToHexValues(unittest.TestCase):
+    # Test Function #3 conv_to_hex_values 1: Pass a list of zeros to
+    # make sure that each value is formatted correctly
+    def test1(self):
+        input1 = [0, 0, 0, 0, 0]
+        expected = ['0', '0', '0', '0', '0']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+<<<<<<< HEAD
+##########
+# Tests for Function #2: my_datetime()
+##########
+=======
+    # Test Function #3 conv_to_hex_values 2: Pass a list of values 1-9
+    # to make sure that each value is converted correctly
+    def test2(self):
+        input1 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        expected = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+>>>>>>> 7753e6a9692241a3393fc16694ecf9fc285f2dc4
+
+    # Test Function #3 conv_to_hex_values 2: Pass a list of the highest
+    # base 16 digit values, in reverse order, to make sure that  each
+    # value is converted correctly
+    def test3(self):
+        input1 = [15, 14, 13, 12, 11, 10]
+        expected = ['F', 'E', 'D', 'C', 'B', 'A']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+    # Test Function #3 conv_to_hex_values 3: Pass a list of
+    # equivalent hex values, that represent the largest possible
+    # 32-bit integer, to make sure that each value is converted correctly
+    def test4(self):
+        input1 = [7, 15, 15, 15, 15, 15, 15, 15]
+        expected = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected,
+                                                         task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+    # Test Function #3 conv_to_hex_values: Pass a list of hex values,
+    # corresponding to the lecture example, to make sure that each value
+    # is converted correctly
+    def test5(self):
+        input1 = [14, 9, 1, 10, 2]
+        expected = ['E', '9', '1', 'A', '2']
+        self.assertEqual(task.conv_to_hex_values(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_to_hex_values
+                                                         (input1)))
+
+
+# Function #3 testing for pad_hex_list()
+class TestPadHexList(unittest.TestCase):
+    # Pass a list with one value to make sure the list is padded correctly
+    def test1(self):
+        input1 = ['0']
+        expected = ['0', '0']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test2(self):
+        # Pass a list with an even number of values to make sure the list
+        # is left untouched
+        input1 = ['0', '0']
+        expected = ['0', '0']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test3(self):
+        # Pass a list of hex string values equivalent to the largest
+        # 32-bit int to make sure it is handled correctly
+        input1 = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        expected = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+    def test4(self):
+        # Pass a list of values corresponding to the lecture example to
+        # make sure it is padded correctly
+        input1 = ['E', '9', '1', 'A', '2']
+        expected = ['0', 'E', '9', '1', 'A', '2']
+        self.assertEqual(task.pad_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         pad_hex_list
+                                                         (input1)))
+
+
+# Function #3 Testing for format_hex_list()
+class TestFormatHexList(unittest.TestCase):
+    # Pass a list containing two hex digit string values to make sure
+    # that they are formatted correctly into one byte value
+    def test1(self):
+        input1 = ['0', '0']
+        expected = ['00']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing four hex digit string values to make sure
+    # that they are formatted correctly into two byte values
+    def test2(self):
+        input1 = ['2', '3', '7', '8']
+        expected = ['23', '78']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing hex digit, string values, equivalent to the
+    # largest 32-bit pos integer, to make sure that they are formatted
+    # correctly
+    def test3(self):
+        input1 = ['7', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
+        expected = ['7F', 'FF', 'FF', 'FF']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing hex digit, string values, equivalent to the
+    # big endian lecture example, to make sure that they are formatted
+    # correctly
+    def test4(self):
+        input1 = ['0', 'E', '9', '1', 'A', '2']
+        expected = ['0E', '91', 'A2']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+    # Pass a list containing hex digit, string values, equivalent to the
+    # little endian lecture example, to make sure that they are formatted
+    # correctly
+    def test5(self):
+        input1 = ['A', '2', '9', '1', '0', 'E']
+        expected = ['A2', '91', '0E']
+        self.assertEqual(task.format_hex_list(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         format_hex_list
+                                                         (input1)))
+
+
+# Testing for Function #3 conv_endian()
+class TestConvEndian(unittest.TestCase):
+    def test1(self):
+        # Pass in zero to make sure that the correct string value is returned
+        input1 = 0
+        expected = '00'
+        self.assertEqual(task.conv_endian(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1)))
+
+    def test2(self):
+        # Pass in value with no byte order string to make sure the correct
+        # string value is returned
+        input1 = 954786
+        expected = '0E 91 A2'
+        self.assertEqual(task.conv_endian(input1), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1)))
+
+    def test3(self):
+        # Pass in value with explicit byte order of 'big' to make sure the
+        # correct string value is returned
+        input1 = 954786
+        input2 = 'big'
+        expected = '0E 91 A2'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test4(self):
+        # Pass in value with explicit byte order of 'little' passed, to
+        # make sure the correct string value is returned
+        input1 = 954786
+        input2 = 'little'
+        expected = 'A2 91 0E'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test5(self):
+        # Pass in negative value with explicit 'big' byte order to
+        # make sure the correct string is returned
+        input1 = -954786
+        input2 = 'big'
+        expected = '-0E 91 A2'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test6(self):
+        # Pass negative value, with 'little' byte order string, as
+        # parameters to make sure the correct string is returned
+        input1 = -954786
+        input2 = 'little'
+        expected = '-A2 91 0E'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test7(self):
+        # Pass in value with an invalid byte order string to make
+        # sure None is returned
+        input1 = 954786
+        input2 = 'small'
+        expected = None
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test8(self):
+        # Pass in value, but with another invalid byte order string,
+        # to make sure it returns None
+        input1 = 20
+        input2 = 'itty-bitty'
+        expected = None
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test9(self):
+        # Pass the largest 32-bit value to make sure that is returned
+        # correctly in little endian order
+        input1 = 2147483647
+        input2 = 'little'
+        expected = 'FF FF FF 7F'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+    def test10(self):
+        # Pass a negative value to make sure that the resulting hex string
+        # is padded with the requisite leading zero
+        input1 = -120220722
+        input2 = 'big'
+        expected = '-07 2A 6C 32'
+        self.assertEqual(task.conv_endian(input1, input2), expected,
+                         msg='Expected {} got {}'.format(expected, task.
+                                                         conv_endian
+                                                         (input1, input2)))
+
+
+# Function #3 Dynamic Random Testing Class
+class TestFunc3Random(unittest.TestCase):
+    pass
+
+
+# Function #3 dynamic random testing function
+def build_test_func3(expected, test_case, order, func_under_test, message):
+    def test(self):
+        result = func_under_test(test_case, order)
+        self.assertEqual(expected, result, message.format(test_case,
+                                                          expected, result))
+
+    return test
+
+
+# Helper Function for random_hex_values
+# Determines is random integer is pos or neg
+# and returns the bool value
+def is_num_neg(num1):
+    return num1 < 0
+
+
+# Helper Function for random_hex_values
+# Removes unwanted chars after hex method is
+# called on random integer value
+def remove_chars(hex_val):
+    if hex_val[0] == '-':
+        hex_val = hex_val.replace('-', '')
+    if len(hex_val) % 2 != 0:
+        hex_val = '0' + hex_val
+
+<<<<<<< HEAD
+    def test_15(self):
+        time = 99999999999
+        expected = '11-16-5138'
+        self.assertEqual(task.my_datetime(time), expected)
+=======
+    return hex_val
+>>>>>>> 7753e6a9692241a3393fc16694ecf9fc285f2dc4
+
+
+# Helper Function for random_hex_values
+# formats hex value string to compare expected results with
+# output from conv_endian
+def format_final_str(hex_val):
+    final_str = ""
+    # count = 0
+    for n in range(len(hex_val)):
+        if n > 0 and n % 2 == 0:
+            final_str = final_str + ' '
+        final_str = final_str + hex_val[n]
+        # count += 1
+
+    return final_str
+
+
+# Generates 10000 random integers and calculates expected hex values,
+# alternating byte order with each test, to test and verify
+# the output of function #3
+def random_hex_values(tests_to_gen=10000):
+    for i in range(tests_to_gen):
+        # Alternate byte order after each test
+        if i % 2 == 0:
+            input2 = 'big'
+        else:
+            input2 = 'little'
+        rand_int = random.randint(-2147483647, 2147483647)
+        is_negative = is_num_neg(rand_int)
+        hex_val = format(rand_int, 'X')
+        hex_val = str(hex_val)
+        hex_val = remove_chars(hex_val)
+        final_str = format_final_str(hex_val)
+        # reverse byte order if necessary
+        if input2 == 'little':
+            list1 = final_str.split()
+            list1 = list1[::-1]
+            final_str = ' '.join([i for i in list1])
+        # add minus sign to any negative numbers
+        if is_negative:
+            final_str = '-' + final_str
+        input1 = rand_int
+        expected = final_str
+        message = 'Test case: {}, Expected: {}, Result: {}'
+        new_test = build_test_func3(expected, input1, input2, task.conv_endian,
+                                    message)
+        setattr(TestFunc3Random, 'test_{}_{}'.format(input1, input2), new_test)
+
+
+class RandomTestMyDateTime(unittest.TestCase):
+    pass
+
+    def build_test_func_2(expected, test_case, func_under_test, message):
+        def test(self):
+            result = func_under_test(test_case)
+            self.assertEqual(expected, result, 
+                             message.format(test_case, expected, result))
+
+        return test
+
+    def generate_my_datetime_tests(tests=500):
         for x in range(0, tests):
             # Getting ranom int for use as input in seconds
             sec = random.randint(0, 9999999999)
@@ -1045,12 +1084,14 @@ class RandomTestMyDateTime(unittest.TestCase):
             # Using utcfromtimestamp for universal time stamp
             # https://www.programiz.com/python-programming/datetime/strftime
             res = datetime.datetime.utcfromtimestamp(sec).strftime("%m-%d-%Y")
-
-            date = task.my_datetime(sec)
-            self.assertEqual(date, res)
-
+            expected = res
+            message = 'Test Case: {}, Expected: {}, Result: {}'
+            new_test = build_test_func_2(expected, sec, task.my_datetime,
+                                         message)
+            setattr(RandomTestMyDateTime, 'test_{}'.format(sec), new_test)
 
 if __name__ == '__main__':
     random_hex_values()
+    generate_my_datetime_tests()
     generate_conv_num_test_cases()
     unittest.main(verbosity=2)
