@@ -5,7 +5,7 @@
 # Assignment: Group Project: Part 2
 # Date: June 1, 2021
 # Group: 22
-# Authors: Jay Chaudhry, Casey Levy, Michael Kistler
+# Authors: Jay Chaudhry, Michael Kistler, Casey Levy
 # ---------------------------------------------------------------------------
 import string
 
