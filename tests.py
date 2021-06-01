@@ -1060,6 +1060,7 @@ def random_hex_values(tests_to_gen=10000):
                                     message)
         setattr(TestFunc3Random, 'test_{}_{}'.format(input1, input2), new_test)
 
+
 # Function #2 Dynamic Random Testing
 class RandomTestMyDateTime(unittest.TestCase):
     pass
